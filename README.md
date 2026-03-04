@@ -1,11 +1,34 @@
-<div align="center">
+# Issatay Isabayev Art Gallery
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A digital archive and biography of the legendary Kazakh graphic artist Issatay Isabayev.
 
-  <h1>Built with AI Studio</h2>
+## Features
+- **Biography**: Detailed life story of the artist.
+- **Gallery**: Curated albums of graphic works and paintings.
+- **News**: Updates on exhibitions and events.
+- **Press**: Collection of media coverage and critical essays.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Tech Stack
+- **Frontend**: React 19, Vite, Tailwind CSS 4, Motion.
+- **Backend**: Express (Node.js), Better-SQLite3.
+- **Icons**: Lucide React.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Getting Started
 
-</div>
+### Prerequisites
+- Node.js (v18+)
+- npm
+
+### Installation
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## License
+This project is for archival and educational purposes.
