@@ -13,14 +13,14 @@ const resources = {
         press: 'Press',
       },
       footer: {
-        archive: 'Issatay Isabayev Archive',
+        archive: 'Issatay Issabayev Archive',
         description: 'Preserving the legacy of a People\'s Artist of Kazakhstan.',
         copyright: '© 2024 Digital Legacy Project',
       },
       home: {
         title_top: 'ISSATAY',
-        title_bottom: 'ISABAYEV',
-        subtitle: 'The master of the line, the soul of the steppe. A People\'s Artist of Kazakhstan.',
+        title_bottom: 'ISSABAYEV',
+        subtitle: 'The master of the line, the soul of the steppe. A luminary of Kazakhstan\'s national graphics.',
         view_gallery: 'View Gallery',
         the_story: 'The Story',
         featured_work: 'Featured Work',
@@ -40,12 +40,13 @@ const resources = {
         label: 'The Life of a Master',
         title: 'BIOGRAPHY',
         milestones: 'Key Milestones',
-        studio_caption: 'The artist in his studio, 1985',
+        studio_caption: 'The artist in his studio, 1980',
       },
       gallery: {
         label: 'The Archive',
         title: 'GALLERY',
         view_album: 'View Album',
+        view_museum: 'Visit Museum',
       },
       album: {
         back: 'Back to Gallery',
@@ -79,7 +80,7 @@ const resources = {
       home: {
         title_top: 'ИСАТАЙ',
         title_bottom: 'ИСАБАЕВ',
-        subtitle: 'Мастер линии, душа степи. Народный художник Казахстана.',
+        subtitle: 'Мастер линии, душа степи. Корифей национальной графики Казахстана.',
         view_gallery: 'Смотреть галерею',
         the_story: 'История',
         featured_work: 'Избранная работа',
@@ -99,12 +100,13 @@ const resources = {
         label: 'Жизнь мастера',
         title: 'БИОГРАФИЯ',
         milestones: 'Ключевые вехи',
-        studio_caption: 'Художник в своей мастерской, 1985',
+        studio_caption: 'Художник в своей мастерской, 1980',
       },
       gallery: {
         label: 'Архив',
         title: 'ГАЛЕРЕЯ',
         view_album: 'Смотреть альбом',
+        view_museum: 'Посетить музей',
       },
       album: {
         back: 'Назад в галерею',
@@ -138,7 +140,7 @@ const resources = {
       home: {
         title_top: 'ИСАТАЙ',
         title_bottom: 'ИСАБАЕВ',
-        subtitle: 'Сызық шебері, дала жаны. Қазақстанның Халық суретшісі.',
+        subtitle: 'Сызықтың хас шебері, ұлы даланың рухын танытқан, қазақ ұлттық графика өнерінің көрнекті тұлғасы.',
         view_gallery: 'Галереяны көру',
         the_story: 'Тарих',
         featured_work: 'Таңдаулы жұмыс',
@@ -158,12 +160,13 @@ const resources = {
         label: 'Шебердің өмірі',
         title: 'ӨМІРБАЯН',
         milestones: 'Негізгі кезеңдер',
-        studio_caption: 'Суретші шеберханасында, 1985',
+        studio_caption: 'Суретші шеберханасында, 1980',
       },
       gallery: {
         label: 'Мұрағат',
         title: 'ГАЛЕРЕЯ',
         view_album: 'Альбомды көру',
+        view_museum: 'Мұражайға бару',
       },
       album: {
         back: 'Галереяға оралу',

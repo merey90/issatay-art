@@ -64,14 +64,24 @@ db.exec(`
 const bioCount = db.prepare('SELECT count(*) as count FROM biography').get() as { count: number };
 if (bioCount.count === 0) {
   db.prepare('INSERT INTO biography (id, content_en, content_ru, content_kk) VALUES (1, ?, ?, ?)').run(
-    `# Issatay Isabayev (1936–2018)
-Issatay Isabayev was a legendary Kazakh graphic artist, painter, and book illustrator. A People's Artist of Kazakhstan, he left an indelible mark on the national art of the 20th century.`,
+    `# Issatay Issabayev (1936–2018)
+Issatay Issabayev was a legendary Kazakh graphic artist and painter. An Honored Art Worker of the Kazakh SSR and Kazakhstan, he left an indelible mark on the national art of the 20th century.`,
     `# Исатай Исабаев (1936–2018)
-Исатай Исабаев был легендарным казахстанским графиком, живописцем и книжным иллюстратором. Народный художник Казахстана, он оставил неизгладимый след в национальном искусстве XX века.`,
+Исатай Исабаев был легендарным казахстанским графиком и живописцем. Заслуженный деятель искусств КазССР и Казахстана, он оставил неизгладимый след в национальном искусстве XX века.`,
     `# Исатай Исабаев (1936–2018)
-Исатай Исабаев аңызға айналған қазақстандық график, кескіндемеші және кітап иллюстраторы болды. Қазақстанның Халық суретшісі, ол XX ғасырдағы ұлттық өнерде өшпес із қалдырды.`
+Исатай Исабаев - қазақ бейнелеу өнеріндегі көрнекті графика шебері және кескіндемеші. Ол XX ғасырдағы ұлттық өнерде өшпес із қалдырған Қазақ КСР және Қазақстанның еңбек сіңірген өнер қайраткері.`
   );
 }
+
+// Always update the biography to ensure it matches the latest content
+db.prepare('UPDATE biography SET content_en = ?, content_ru = ?, content_kk = ? WHERE id = 1').run(
+  `# Issatay Issabayev (1936–2018)
+Issatay Issabayev was a legendary Kazakh graphic artist and painter. An Honored Art Worker of the Kazakh SSR and Kazakhstan, he left an indelible mark on the national art of the 20th century.`,
+  `# Исатай Исабаев (1936–2018)
+Исатай Исабаев был легендарным казахстанским графиком и живописцем. Заслуженный деятель искусств КазССР и Казахстана, он оставил неизгладимый след в национальном искусстве XX века.`,
+  `# Исатай Исабаев (1936–2018)
+Исатай Исабаев - қазақ бейнелеу өнеріндегі көрнекті графика шебері және кескіндемеші. Ол XX ғасырдағы ұлттық өнерде өшпес із қалдырған Қазақ КСР және Қазақстанның еңбек сіңірген өнер қайраткері.`
+);
 
 const albumCount = db.prepare('SELECT count(*) as count FROM albums').get() as { count: number };
 if (albumCount.count === 0) {
@@ -99,7 +109,7 @@ const newsCount = db.prepare('SELECT count(*) as count FROM news').get() as { co
 if (newsCount.count === 0) {
   db.prepare('INSERT INTO news (title_en, title_ru, title_kk, content_en, content_ru, content_kk, date) VALUES (?, ?, ?, ?, ?, ?, ?)').run(
     'Retrospective Exhibition in Almaty', 'Ретроспективная выставка в Алматы', 'Алматыдағы ретроспективті көрме',
-    'A major retrospective of Issatay Isabayev\'s work is currently being held at the Kasteyev State Museum of Arts.', 'В Государственном музее искусств имени Кастеева проходит крупная ретроспектива работ Исатая Исабаева.', 'Ә. Қастеев атындағы Мемлекеттік өнер мұражайында Исатай Исабаевтың жұмыстарының ауқымды ретроспективасы өтуде.',
+    'A major retrospective of Issatay Issabayev\'s work is currently being held at the Kasteyev State Museum of Arts.', 'В Государственном музее искусств имени Кастеева проходит крупная ретроспектива работ Исатая Исабаева.', 'Ә. Қастеев атындағы Мемлекеттік өнер мұражайында Исатай Исабаевтың жұмыстарының ауқымды ретроспективасы өтуде.',
     '2024-05-15'
   );
 }
@@ -109,7 +119,7 @@ if (pressCount.count === 0) {
   db.prepare('INSERT INTO press (title_en, title_ru, title_kk, source_en, source_ru, source_kk, content_en, content_ru, content_kk, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').run(
     'The Master of the Line', 'Мастер линии', 'Сызық шебері',
     'Kazakhstanskaya Pravda', 'Казахстанская правда', 'Казахстанская правда',
-    'An in-depth look at the graphic legacy of Issatay Isabayev and his influence on contemporary Kazakh artists.', 'Глубокий взгляд на графическое наследие Исатая Исабаева и его влияние на современных казахстанских художников.', 'Исатай Исабаевтың графикалық мұрасы мен оның қазіргі қазақстандық суретшілерге тигізген әсері туралы терең шолу.',
+    'An in-depth look at the graphic legacy of Issatay Issabayev and his influence on contemporary Kazakh artists.', 'Глубокий взгляд на графическое наследие Исатая Исабаева и его влияние на современных казахстанских художников.', 'Исатай Исабаевтың графикалық мұрасы мен оның қазіргі қазақстандық суретшілерге тигізген әсері туралы терең шолу.',
     '2018-10-20'
   );
 }

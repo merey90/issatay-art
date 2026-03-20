@@ -40,7 +40,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link to="/" className="text-2xl font-serif tracking-tighter text-white">
-          ISSATAY <span className="text-white/50 italic">ISABAYEV</span>
+          ISSATAY <span className="text-white/50 italic">ISSABAYEV</span>
         </Link>
 
         {/* Desktop Nav */}

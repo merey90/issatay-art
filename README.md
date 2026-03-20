@@ -1,6 +1,6 @@
-# Issatay Isabayev Art Gallery
+# Issatay Issabayev Art Gallery
 
-A digital archive and biography of the legendary Kazakh graphic artist Issatay Isabayev.
+A digital archive and biography of the legendary Kazakh graphic artist Issatay Issabayev.
 
 ## Features
 - **Biography**: Detailed life story of the artist.

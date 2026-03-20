@@ -47,15 +47,15 @@ const Home = () => {
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            src="https://picsum.photos/seed/issatay/1200/1600"
-            alt="Issatay Isabayev"
+            src="/victory.jpg"
+            alt="Issatay Issabayev"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-1000"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
           <div className="absolute bottom-12 right-12 text-right">
             <p className="text-white/40 uppercase tracking-widest text-xs mb-2">{t('home.featured_work')}</p>
-            <h3 className="text-white text-2xl font-serif italic">{i18n.language.startsWith('ru') ? 'Путь Абая, 1970' : i18n.language.startsWith('kk') ? 'Абай жолы, 1970' : 'The Path of Abai, 1970'}</h3>
+            <h3 className="text-white text-2xl font-serif italic">{i18n.language.startsWith('ru') ? 'Победа, 1982' : i18n.language.startsWith('kk') ? 'Жеңіс, 1982' : 'The Victory, 1982'}</h3>
           </div>
         </div>
       </section>
