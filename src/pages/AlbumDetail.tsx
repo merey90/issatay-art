@@ -99,12 +99,12 @@ const AlbumDetail = () => {
                   alt={artwork.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <h4 className="text-white font-serif text-lg">{artwork.title}</h4>
-                  <p className="text-white/60 text-xs uppercase tracking-widest">{artwork.year}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6">
+                  <h4 className="text-white font-serif text-lg leading-tight mb-1">{artwork.title}</h4>
+                  <p className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold">{artwork.year}</p>
                   <div className="absolute top-6 right-6 flex gap-3">
-                    {artwork.audio_url && <Music className="text-white/60" size={18} />}
-                    <Maximize2 className="text-white/40" size={18} />
+                    {artwork.audio_url && <Music className="text-white/80" size={16} />}
+                    <Maximize2 className="text-white/40 group-hover:text-white/80 transition-colors" size={16} />
                   </div>
                 </div>
               </motion.div>
