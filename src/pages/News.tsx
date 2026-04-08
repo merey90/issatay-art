@@ -107,15 +107,15 @@ const News = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black py-32 px-6">
+    <div className="min-h-screen py-32 px-6 transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-white/30 uppercase tracking-[0.3em] text-xs mb-12 block">{t('news.label')}</span>
-          <h1 className="text-6xl lg:text-8xl font-serif font-black tracking-tighter mb-24 leading-none">
+          <span className="incised-text mb-12 block">{t('news.label')}</span>
+          <h1 className="text-6xl lg:text-8xl font-serif font-black tracking-tighter mb-24 leading-none" style={{ color: 'var(--app-text)' }}>
             {t('news.title')}
           </h1>
 
@@ -131,25 +131,25 @@ const News = () => {
               >
                 <div className="flex flex-col md:flex-row gap-8 md:gap-16">
                   <div className="md:w-1/4">
-                    <span className="text-white font-serif italic text-2xl block mb-2">
+                    <span className="font-serif italic text-2xl block mb-2" style={{ color: 'var(--app-text)' }}>
                       {getLocalizedText(item.date)}
                     </span>
-                    <div className="w-8 h-px bg-white/20" />
+                    <div className="w-8 h-px" style={{ backgroundColor: 'var(--card-border)' }} />
                   </div>
                   <div className="md:w-3/4">
                     {item.link ? (
                       <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-start gap-3 group/link">
-                        <h2 className="text-3xl font-serif text-white mb-6 group-hover/link:text-white/70 transition-colors leading-tight">
+                        <h2 className="text-3xl font-serif mb-6 group-hover:opacity-50 transition-opacity leading-tight" style={{ color: 'var(--app-text)' }}>
                           {getLocalizedText(item.title)}
                         </h2>
-                        <ExternalLink size={20} className="text-white/30 group-hover/link:text-white/70 mt-2 flex-shrink-0 transition-colors" />
+                        <ExternalLink size={20} className="mt-2 flex-shrink-0 transition-opacity opacity-30 group-hover:opacity-100" style={{ color: 'var(--app-text)' }} />
                       </a>
                     ) : (
-                      <h2 className="text-3xl font-serif text-white mb-6 leading-tight">
+                      <h2 className="text-3xl font-serif mb-6 leading-tight" style={{ color: 'var(--app-text)' }}>
                         {getLocalizedText(item.title)}
                       </h2>
                     )}
-                    <p className="text-white/50 text-lg leading-relaxed font-serif italic">
+                    <p className="text-lg leading-relaxed font-serif italic opacity-70" style={{ color: 'var(--app-text)' }}>
                       {getLocalizedText(item.content)}
                     </p>
                   </div>

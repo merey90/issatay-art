@@ -53,10 +53,10 @@ const AlbumDetail = () => {
     navigate(`/gallery/${id}`, { replace: true });
   };
 
-  if (!album) return <div className="min-h-screen bg-black flex items-center justify-center text-white/20 uppercase tracking-widest">{t('album.loading')}</div>;
+  if (!album) return <div className="min-h-screen flex items-center justify-center uppercase tracking-widest opacity-20" style={{ backgroundColor: 'var(--app-bg)', color: 'var(--app-text)' }}>{t('album.loading')}</div>;
 
   return (
-    <div className="min-h-screen bg-black py-32 px-6 relative overflow-hidden">
+    <div className="min-h-screen py-32 px-6 relative overflow-hidden transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
       {album.title === 'The Book World' && (
         <div 
           className="absolute inset-0 opacity-10 pointer-events-none grayscale"
@@ -64,7 +64,7 @@ const AlbumDetail = () => {
             backgroundImage: `url(${album.cover_image})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            filter: 'blur(100px)'
+            filter: 'blur(120px)'
           }}
         />
       )}
@@ -74,13 +74,13 @@ const AlbumDetail = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <Link to="/gallery" className="text-white/40 hover:text-white transition-colors flex items-center gap-2 mb-12 uppercase tracking-widest text-xs font-bold">
+          <Link to="/gallery" className="incised-text hover:opacity-100 transition-opacity flex items-center gap-2 mb-12" style={{ color: 'var(--app-text)', opacity: 0.4 }}>
             <ArrowLeft size={14} /> {t('album.back')}
           </Link>
 
           <div className="mb-24">
-            <h1 className="text-5xl lg:text-7xl font-serif font-black tracking-tighter mb-6">{album.title}</h1>
-            <p className="text-white/40 max-w-2xl text-lg font-serif italic">{album.description}</p>
+            <h1 className="text-5xl lg:text-7xl font-serif font-black tracking-tighter mb-6" style={{ color: 'var(--app-text)' }}>{album.title}</h1>
+            <p className="max-w-2xl text-lg font-serif italic opacity-70" style={{ color: 'var(--app-text)' }}>{album.description}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -91,20 +91,21 @@ const AlbumDetail = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="relative group cursor-pointer overflow-hidden rounded-xl bg-zinc-900 aspect-square"
+                className="relative group cursor-pointer overflow-hidden rounded-sm aspect-square transition-colors shadow-sm"
+                style={{ backgroundColor: 'var(--zinc-plate)', border: '1px solid var(--card-border)' }}
                 onClick={() => handleOpenArtwork(artwork, i)}
               >
                 <img
                   src={artwork.image_url}
                   alt={artwork.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6">
-                  <h4 className="text-white font-serif text-lg leading-tight mb-1">{artwork.title}</h4>
-                  <p className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold">{artwork.year}</p>
+                <div className="absolute inset-0 flex flex-col justify-end p-6" style={{ background: 'var(--card-gradient)' }}>
+                  <h4 className="font-serif text-lg leading-tight mb-1" style={{ color: 'var(--app-text)' }}>{artwork.title}</h4>
+                  <p className="incised-text" style={{ color: 'var(--incised-text-color)' }}>{artwork.year}</p>
                   <div className="absolute top-6 right-6 flex gap-3">
-                    {artwork.audio_url && <Music className="text-white/80" size={16} />}
-                    <Maximize2 className="text-white/40 group-hover:text-white/80 transition-colors" size={16} />
+                    {artwork.audio_url && <Music className="opacity-40" size={16} style={{ color: 'var(--app-text)' }} />}
+                    <Maximize2 className="opacity-20 group-hover:opacity-60 transition-opacity" size={16} style={{ color: 'var(--app-text)' }} />
                   </div>
                 </div>
               </motion.div>
@@ -120,11 +121,13 @@ const AlbumDetail = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 md:p-12"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12 backdrop-blur-md"
+            style={{ backgroundColor: 'var(--nav-bg)' }}
             onClick={handleCloseArtwork}
           >
             <button 
-              className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors"
+              className="absolute top-8 right-8 opacity-30 hover:opacity-100 transition-opacity"
+              style={{ color: 'var(--app-text)' }}
               onClick={handleCloseArtwork}
             >
               <X size={32} />
@@ -139,17 +142,18 @@ const AlbumDetail = () => {
               <img
                 src={selectedImage.image_url}
                 alt={selectedImage.title}
-                className="max-w-full max-h-[80vh] object-contain shadow-2xl"
+                className="max-w-full max-h-[70vh] object-contain shadow-2xl border"
+                style={{ borderColor: 'var(--card-border)' }}
               />
               <div className="text-center w-full max-w-2xl">
-                <h3 className="text-2xl font-serif text-white mb-2">{selectedImage.title}</h3>
-                <p className="text-white/40 uppercase tracking-widest text-xs mb-8">{selectedImage.year}</p>
+                <h3 className="text-2xl font-serif mb-2" style={{ color: 'var(--app-text)' }}>{selectedImage.title}</h3>
+                <p className="incised-text mb-8" style={{ color: 'var(--incised-text-color)' }}>{selectedImage.year}</p>
                 
                 {selectedImage.audio_url && (
-                  <div className="bg-white/5 p-6 rounded-2xl border border-white/10 w-full">
+                  <div className="p-6 rounded-sm border w-full shadow-sm" style={{ backgroundColor: 'var(--app-bg)', borderColor: 'var(--card-border)' }}>
                     <audio 
                       controls 
-                      className="w-full h-12 invert opacity-80"
+                      className="w-full h-10 opacity-80 hover:opacity-100 transition-opacity"
                       autoPlay={false}
                     >
                       <source src={selectedImage.audio_url} type="audio/mpeg" />

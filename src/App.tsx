@@ -1,7 +1,7 @@
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Instagram, Facebook, Mail, Globe } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Menu, X, Instagram, Facebook, Mail, Globe, Moon, Sun } from 'lucide-react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Pages
@@ -12,10 +12,19 @@ import AlbumDetail from './pages/AlbumDetail';
 import News from './pages/News';
 import Press from './pages/Press';
 
+// Theme Context
+const ThemeContext = createContext<{
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
+}>({ theme: 'light', toggleTheme: () => {} });
+
+export const useTheme = () => useContext(ThemeContext);
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { t, i18n } = useTranslation();
+  const { theme } = useTheme();
 
   const navLinks = [
     { name: t('nav.home'), path: '/' },
@@ -37,22 +46,24 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b transition-colors duration-300" 
+         style={{ backgroundColor: 'var(--nav-bg)', borderColor: 'var(--nav-border)' }}>
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-serif tracking-tighter text-white">
-          ISSATAY <span className="text-white/50 italic">ISSABAYEV</span>
+        <Link to="/" className="text-2xl font-serif tracking-tighter" style={{ color: 'var(--app-text)' }}>
+          ISSATAY <span className="italic" style={{ color: 'var(--incised-text-color)' }}>ISSABAYEV</span>
         </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <div className="flex items-center gap-6 mr-8 border-r border-white/10 pr-8">
+          <div className="flex items-center gap-6 mr-8 border-r pr-8" style={{ borderColor: 'var(--nav-border)' }}>
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-xs uppercase tracking-widest transition-colors ${
-                  location.pathname === link.path ? 'text-white' : 'text-white/50 hover:text-white'
+                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-colors ${
+                  location.pathname === link.path ? '' : 'opacity-40 hover:opacity-100'
                 }`}
+                style={{ color: location.pathname === link.path ? 'var(--app-text)' : 'var(--app-text)' }}
               >
                 {link.name}
               </Link>
@@ -60,14 +71,18 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Globe size={14} className="text-white/30" />
+            <Globe size={14} style={{ color: 'var(--incised-text-color)' }} />
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => i18n.changeLanguage(lang.code)}
                 className={`text-[10px] font-bold tracking-tighter px-2 py-1 rounded transition-colors ${
-                  i18n.language.startsWith(lang.code) ? 'bg-white text-black' : 'text-white/40 hover:text-white'
+                  i18n.language.startsWith(lang.code) ? 'text-white' : 'opacity-40 hover:opacity-100'
                 }`}
+                style={{ 
+                  backgroundColor: i18n.language.startsWith(lang.code) ? 'var(--app-text)' : 'transparent',
+                  color: i18n.language.startsWith(lang.code) ? 'var(--app-bg)' : 'var(--app-text)'
+                }}
               >
                 {lang.name}
               </button>
@@ -76,7 +91,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden" style={{ color: 'var(--app-text)' }} onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -88,7 +103,8 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-0 w-full bg-black border-b border-white/10 p-6 flex flex-col gap-6 md:hidden"
+            className="absolute top-20 left-0 w-full border-b p-6 flex flex-col gap-6 md:hidden"
+            style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--nav-border)' }}
           >
             {navLinks.map((link) => (
               <Link
@@ -96,21 +112,26 @@ const Navbar = () => {
                 to={link.path}
                 onClick={() => setIsOpen(false)}
                 className={`text-lg uppercase tracking-widest ${
-                  location.pathname === link.path ? 'text-white' : 'text-white/50'
+                  location.pathname === link.path ? '' : 'opacity-40'
                 }`}
+                style={{ color: 'var(--app-text)' }}
               >
                 {link.name}
               </Link>
             ))}
-            <div className="h-px bg-white/10 w-full my-2" />
+            <div className="h-px w-full my-2" style={{ backgroundColor: 'var(--nav-border)' }} />
             <div className="flex items-center gap-4">
               {languages.map((lang) => (
                 <button
                   key={lang.code}
                   onClick={() => changeLanguage(lang.code)}
                   className={`text-sm font-bold tracking-widest px-4 py-2 rounded ${
-                    i18n.language.startsWith(lang.code) ? 'bg-white text-black' : 'text-white/40'
+                    i18n.language.startsWith(lang.code) ? '' : 'opacity-40'
                   }`}
+                  style={{ 
+                    backgroundColor: i18n.language.startsWith(lang.code) ? 'var(--app-text)' : 'transparent',
+                    color: i18n.language.startsWith(lang.code) ? 'var(--app-bg)' : 'var(--app-text)'
+                  }}
                 >
                   {lang.name}
                 </button>
@@ -125,42 +146,81 @@ const Navbar = () => {
 
 const Footer = () => {
   const { t } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <footer className="bg-black border-t border-white/10 py-12 px-6">
+    <footer className="border-t py-12 px-6 transition-colors duration-300" style={{ backgroundColor: 'var(--footer-bg)', borderColor: 'var(--footer-border)' }}>
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="text-center md:text-left">
-          <h3 className="text-xl font-serif text-white mb-2">{t('footer.archive')}</h3>
-          <p className="text-white/40 text-sm">{t('footer.description')}</p>
+          <h3 className="text-xl font-serif mb-2" style={{ color: 'var(--app-text)' }}>{t('footer.archive')}</h3>
+          <p className="text-sm opacity-50" style={{ color: 'var(--app-text)' }}>{t('footer.description')}</p>
         </div>
-        <div className="flex gap-6 text-white/50">
-          <a href="#" className="hover:text-white transition-colors"><Instagram size={20} /></a>
-          <a href="https://www.facebook.com/share/17RiKb99DB/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><Facebook size={20} /></a>
-          <a href="mailto:aliya-isabaeva@mail.ru" className="hover:text-white transition-colors"><Mail size={20} /></a>
+        <div className="flex gap-6 opacity-40">
+          <a href="#" className="hover:opacity-100 transition-opacity" style={{ color: 'var(--app-text)' }}><Instagram size={20} /></a>
+          <a href="https://www.facebook.com/share/17RiKb99DB/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity" style={{ color: 'var(--app-text)' }}><Facebook size={20} /></a>
+          <a href="mailto:aliya-isabaeva@mail.ru" className="hover:opacity-100 transition-opacity" style={{ color: 'var(--app-text)' }}><Mail size={20} /></a>
         </div>
-        <p className="text-white/20 text-[10px] uppercase tracking-widest">{t('footer.copyright')}</p>
+        <div className="flex items-center gap-8">
+          <p className="incised-text">{t('footer.copyright')}</p>
+          <button 
+            onClick={toggleTheme}
+            className="p-2 rounded-full border transition-all hover:scale-110"
+            style={{ borderColor: 'var(--card-border)', color: 'var(--app-text)' }}
+            aria-label="Toggle theme"
+          >
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+        </div>
       </div>
     </footer>
   );
 };
 
 export default function App() {
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') return saved;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white selection:text-black">
-      <Navbar />
-      <main className="pt-20">
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/biography" element={<Biography />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/gallery/:id" element={<AlbumDetail />} />
-            <Route path="/gallery/:id/:trackId" element={<AlbumDetail />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/press" element={<Press />} />
-          </Routes>
-        </AnimatePresence>
-      </main>
-      <Footer />
-    </div>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <div className="min-h-screen relative font-sans transition-colors duration-300" 
+           style={{ backgroundColor: 'var(--app-bg)', color: 'var(--app-text)' }}>
+        <style>{`
+          ::selection {
+            background-color: var(--selection-bg);
+            color: var(--selection-text);
+          }
+        `}</style>
+        <Navbar />
+        <main className="pt-20">
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/biography" element={<Biography />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/gallery/:id" element={<AlbumDetail />} />
+              <Route path="/gallery/:id/:trackId" element={<AlbumDetail />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/press" element={<Press />} />
+            </Routes>
+          </AnimatePresence>
+        </main>
+        <Footer />
+      </div>
+    </ThemeContext.Provider>
   );
 }

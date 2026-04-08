@@ -148,15 +148,15 @@ const Press = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black py-32 px-6">
+    <div className="min-h-screen py-32 px-6 transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-white/30 uppercase tracking-[0.3em] text-xs mb-12 block">{t('press.label')}</span>
-          <h1 className="text-6xl lg:text-8xl font-serif font-black tracking-tighter mb-24 leading-none">
+          <span className="incised-text mb-12 block">{t('press.label')}</span>
+          <h1 className="text-6xl lg:text-8xl font-serif font-black tracking-tighter mb-24 leading-none" style={{ color: 'var(--app-text)' }}>
             {t('press.title')}
           </h1>
 
@@ -168,18 +168,19 @@ const Press = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-12 border border-white/10 bg-zinc-950 rounded-3xl hover:border-white/20 transition-all group"
+                className="p-12 border rounded-sm transition-all group shadow-sm"
+                style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}
               >
                 <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
                   <div>
-                    <span className="text-white/40 uppercase tracking-widest text-xs font-bold mb-2 block">{getLocalizedText(item.date)}</span>
-                    <h2 className="text-3xl font-serif text-white leading-tight group-hover:text-white/80 transition-colors">{getLocalizedText(item.title)}</h2>
+                    <span className="incised-text mb-2 block">{getLocalizedText(item.date)}</span>
+                    <h2 className="text-3xl font-serif leading-tight group-hover:opacity-60 transition-opacity" style={{ color: 'var(--app-text)' }}>{getLocalizedText(item.title)}</h2>
                   </div>
                 </div>
-                <p className="text-white/60 text-lg leading-relaxed font-serif italic mb-10 max-w-3xl">
+                <p className="text-lg leading-relaxed font-serif italic mb-10 max-w-3xl opacity-70" style={{ color: 'var(--app-text)' }}>
                   "{getLocalizedText(item.content)}"
                 </p>
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-white/40 hover:text-white transition-colors">
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="incised-text hover:opacity-100 transition-opacity flex items-center gap-2" style={{ color: 'var(--app-text)', opacity: 0.4 }}>
                   {t('press.read_full')} <ExternalLink size={14} />
                 </a>
               </motion.div>

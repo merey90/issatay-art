@@ -1,14 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-serif: "Cormorant Garamond", serif;
   --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-zinc-plate: var(--zinc-plate);
+  --color-silver: var(--silver);
+  --color-etch-ink: var(--etch-ink);
+}
+
+:root {
+  --app-bg: #fafafa; /* zinc-50 */
+  --app-text: #18181b; /* zinc-900 */
+  --card-bg: #ffffff;
+  --card-border: #e4e4e7; /* zinc-200 */
+  --incised-text-color: #71717a; /* zinc-500 */
+  --scratch-line-color: #d4d4d8; /* zinc-300 */
+  --nav-bg: rgba(255, 255, 255, 0.8);
+  --nav-border: #f4f4f5; /* zinc-100 */
+  --zinc-plate: #f4f4f5;
+  --silver: #e4e4e7;
+  --etch-ink: #18181b;
+  --footer-bg: #ffffff;
+  --footer-border: #f4f4f5;
+  --selection-bg: #18181b;
+  --selection-text: #ffffff;
+  --card-gradient: linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.4), transparent);
+}
+
+.dark {
+  --app-bg: #09090b; /* etch-black */
+  --app-text: #ffffff;
+  --card-bg: #18181b; /* zinc-900 */
+  --card-border: rgba(255, 255, 255, 0.1);
+  --incised-text-color: rgba(255, 255, 255, 0.4);
+  --scratch-line-color: rgba(255, 255, 255, 0.1);
+  --nav-bg: rgba(9, 9, 11, 0.8);
+  --nav-border: rgba(255, 255, 255, 0.05);
+  --zinc-plate: #27272a;
+  --silver: #3f3f46;
+  --etch-ink: #ffffff;
+  --footer-bg: #09090b;
+  --footer-border: rgba(255, 255, 255, 0.05);
+  --selection-bg: #ffffff;
+  --selection-text: #000000;
+  --card-gradient: linear-gradient(to top, rgba(9, 9, 11, 0.95), rgba(9, 9, 11, 0.4), transparent);
 }
 
 @layer base {
   body {
-    @apply bg-black text-white antialiased;
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    @apply antialiased transition-colors duration-300;
   }
 }
 
@@ -17,6 +62,29 @@
 }
 
 @layer utilities {
+  .metal-plate {
+    @apply relative overflow-hidden transition-colors duration-300;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    
+    &::before {
+      content: "";
+      @apply absolute inset-0 opacity-[0.02] pointer-events-none;
+      background-image: url("https://www.transparenttextures.com/patterns/brushed-alum.png");
+    }
+  }
+
+  .scratch-line {
+    @apply h-px transition-colors duration-300;
+    background: linear-gradient(to right, transparent, var(--scratch-line-color), transparent);
+  }
+
+  .incised-text {
+    @apply font-mono uppercase tracking-[0.3em] text-[10px] transition-colors duration-300;
+    color: var(--incised-text-color);
+  }
+
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
   }
@@ -26,11 +94,11 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--card-border);
     border-radius: 10px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+    opacity: 0.8;
   }
 }

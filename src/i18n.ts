@@ -15,7 +15,7 @@ const resources = {
       footer: {
         archive: 'Issatay Issabayev Archive',
         description: 'Preserving the legacy of a People\'s Artist of Kazakhstan.',
-        copyright: '© 2024 Digital Legacy Project',
+        copyright: '© 2026 Issatay Issabayev',
       },
       home: {
         title_top: 'ISSATAY',
@@ -78,7 +78,7 @@ const resources = {
       footer: {
         archive: 'Архив Исатая Исабаева',
         description: 'Сохранение наследия Народного художника Казахстана.',
-        copyright: '© 2024 Проект цифрового наследия',
+        copyright: '© 2026 Исатай Исабаев',
       },
       home: {
         title_top: 'ИСАТАЙ',
@@ -141,7 +141,7 @@ const resources = {
       footer: {
         archive: 'Исатай Исабаев мұрағаты',
         description: 'Қазақстанның Халық суретшісінің мұрасын сақтау.',
-        copyright: '© 2024 Цифрлық мұра жобасы',
+        copyright: '© 2026 Исатай Исабаев',
       },
       home: {
         title_top: 'ИСАТАЙ',
