@@ -1,8 +1,37 @@
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Instagram, Facebook, Mail, Globe, Moon, Sun } from 'lucide-react';
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+
+// Scroll to top component
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  const prevPathRef = useRef(pathname);
+
+  useEffect(() => {
+    // Helper to get the base path (e.g., /gallery/1) to detect if we're on the same album
+    const getBasePath = (path: string) => {
+      const segments = path.split('/');
+      if (segments[1] === 'gallery' && segments[2]) {
+        return `/gallery/${segments[2]}`;
+      }
+      return path;
+    };
+
+    const currentBase = getBasePath(pathname);
+    const prevBase = getBasePath(prevPathRef.current);
+
+    // Only scroll to top if we've navigated to a completely different page or a different album
+    if (currentBase !== prevBase) {
+      window.scrollTo(0, 0);
+    }
+    
+    prevPathRef.current = pathname;
+  }, [pathname]);
+
+  return null;
+};
 
 // Pages
 import Home from './pages/Home';
@@ -205,6 +234,7 @@ export default function App() {
             color: var(--selection-text);
           }
         `}</style>
+        <ScrollToTop />
         <Navbar />
         <main className="pt-20">
           <AnimatePresence mode="wait">

@@ -32,25 +32,29 @@ const AlbumDetail = () => {
       .then(res => res.json())
       .then(data => {
         setAlbum(data);
-        // If trackId is in URL, find and select it (trackId in URL is 1-based index)
-        if (trackId && data.artworks) {
-          const index = parseInt(trackId) - 1;
-          if (index >= 0 && index < data.artworks.length) {
-            setSelectedImage(data.artworks[index]);
-          }
-        }
       });
-  }, [id, i18n.language, trackId]);
+  }, [id, i18n.language]);
+
+  useEffect(() => {
+    if (album && trackId) {
+      const index = parseInt(trackId) - 1;
+      if (index >= 0 && index < album.artworks.length) {
+        setSelectedImage(album.artworks[index]);
+      }
+    } else {
+      setSelectedImage(null);
+    }
+  }, [album, trackId]);
 
   const handleOpenArtwork = (artwork: Artwork, index: number) => {
     setSelectedImage(artwork);
     // Use 1-based index for the URL to avoid database ID offsets
-    navigate(`/gallery/${id}/${index + 1}`, { replace: true });
+    navigate(`/gallery/${id}/${index + 1}`);
   };
 
   const handleCloseArtwork = () => {
     setSelectedImage(null);
-    navigate(`/gallery/${id}`, { replace: true });
+    navigate(`/gallery/${id}`);
   };
 
   if (!album) return <div className="min-h-screen flex items-center justify-center uppercase tracking-widest opacity-20" style={{ backgroundColor: 'var(--app-bg)', color: 'var(--app-text)' }}>{t('album.loading')}</div>;
