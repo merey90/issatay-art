@@ -134,8 +134,8 @@ const Footer = () => {
         </div>
         <div className="flex gap-6 text-white/50">
           <a href="#" className="hover:text-white transition-colors"><Instagram size={20} /></a>
-          <a href="#" className="hover:text-white transition-colors"><Facebook size={20} /></a>
-          <a href="#" className="hover:text-white transition-colors"><Mail size={20} /></a>
+          <a href="https://www.facebook.com/share/17RiKb99DB/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><Facebook size={20} /></a>
+          <a href="mailto:aliya-isabaeva@mail.ru" className="hover:text-white transition-colors"><Mail size={20} /></a>
         </div>
         <p className="text-white/20 text-[10px] uppercase tracking-widest">{t('footer.copyright')}</p>
       </div>
@@ -154,6 +154,7 @@ export default function App() {
             <Route path="/biography" element={<Biography />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/gallery/:id" element={<AlbumDetail />} />
+            <Route path="/gallery/:id/:trackId" element={<AlbumDetail />} />
             <Route path="/news" element={<News />} />
             <Route path="/press" element={<Press />} />
           </Routes>

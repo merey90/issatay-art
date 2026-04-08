@@ -30,6 +30,7 @@ db.exec(`
     title_ru TEXT,
     title_kk TEXT,
     image_url TEXT NOT NULL,
+    audio_url TEXT,
     year TEXT,
     FOREIGN KEY(album_id) REFERENCES albums(id)
   );
@@ -60,6 +61,26 @@ db.exec(`
   );
 `);
 
+// Migration: Add audio_url to artworks if it doesn't exist
+try {
+  db.exec('ALTER TABLE artworks ADD COLUMN audio_url TEXT');
+} catch (e) {
+  // Column might already exist
+}
+
+// Cleanup and Rename for "The Book World"
+const cleanupArtworks = db.prepare("DELETE FROM artworks WHERE album_id IN (SELECT id FROM albums WHERE title_en IN ('The Path of Abai', 'Steppe Legends'))").run();
+const cleanupAlbums = db.prepare("DELETE FROM albums WHERE title_en IN ('The Path of Abai', 'Steppe Legends')").run();
+const updateAlbum = db.prepare("UPDATE albums SET title_en = 'The Book World', cover_image = '/book_world_bg.png' WHERE title_en = 'Book World' OR title_en = 'The Book World'").run();
+const updateArtworks = db.prepare("UPDATE artworks SET image_url = '/book_world_bg.png', audio_url = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3' WHERE album_id IN (SELECT id FROM albums WHERE title_en = 'The Book World')").run();
+
+console.log('Database Cleanup/Update:', {
+  artworksDeleted: cleanupArtworks.changes,
+  albumsDeleted: cleanupAlbums.changes,
+  albumsUpdated: updateAlbum.changes,
+  artworksUpdated: updateArtworks.changes
+});
+
 // Seed initial data if empty
 const bioCount = db.prepare('SELECT count(*) as count FROM biography').get() as { count: number };
 if (bioCount.count === 0) {
@@ -86,23 +107,23 @@ Issatay Issabayev was a legendary Kazakh graphic artist and painter. An Honored 
 const albumCount = db.prepare('SELECT count(*) as count FROM albums').get() as { count: number };
 if (albumCount.count === 0) {
   const insertAlbum = db.prepare('INSERT INTO albums (title_en, title_ru, title_kk, description_en, description_ru, description_kk, cover_image) VALUES (?, ?, ?, ?, ?, ?, ?)');
-  const insertArtwork = db.prepare('INSERT INTO artworks (album_id, title_en, title_ru, title_kk, image_url, year) VALUES (?, ?, ?, ?, ?, ?)');
+  const insertArtwork = db.prepare('INSERT INTO artworks (album_id, title_en, title_ru, title_kk, image_url, audio_url, year) VALUES (?, ?, ?, ?, ?, ?, ?)');
 
-  const album1 = insertAlbum.run(
-    'The Path of Abai', 'Путь Абая', 'Абай жолы',
-    'Illustrations for the epic novel by Mukhtar Auezov.', 'Иллюстрации к эпическому роману Мухтара Ауэзова.', 'Мұхтар Әуезовтің эпикалық романына иллюстрациялар.',
-    'https://picsum.photos/seed/abai/800/600'
+  const album3 = insertAlbum.run(
+    'The Book World', 'Книжный мир', 'Кітап әлемі',
+    'Audio guide for the "The Book World" exhibition section.', 'Аудиогид для раздела выставки «Книжный мир».', '«Кітап әлемі» көрме бөліміне арналған аудио нұсқаулық.',
+    '/book_world_bg.png'
   ).lastInsertRowid;
-  
-  insertArtwork.run(album1, 'Abai in the Steppe', 'Абай в степи', 'Даладағы Абай', 'https://picsum.photos/seed/abai1/800/1000', '1970');
 
-  const album2 = insertAlbum.run(
-    'Steppe Legends', 'Степные легенды', 'Дала аңыздары',
-    'Graphic works inspired by Kazakh folklore.', 'Графические работы, вдохновленные казахским фольклором.', 'Қазақ фольклорынан шабыт алған графикалық жұмыстар.',
-    'https://picsum.photos/seed/steppe/800/600'
-  ).lastInsertRowid;
-  
-  insertArtwork.run(album2, 'The Golden Warrior', 'Золотой воин', 'Алтын адам', 'https://picsum.photos/seed/gold/800/1000', '1985');
+  for (let i = 1; i <= 10; i++) {
+    insertArtwork.run(
+      album3, 
+      `Audio Track ${i}`, `Аудио трек ${i}`, `Аудио трек ${i}`,
+      '/book_world_bg.png',
+      'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
+      '2024'
+    );
+  }
 }
 
 const newsCount = db.prepare('SELECT count(*) as count FROM news').get() as { count: number };

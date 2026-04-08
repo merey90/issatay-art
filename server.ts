@@ -1,6 +1,6 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
-import db from "./src/db.js";
+import db from "./src/db.ts";
 
 async function startServer() {
   const app = express();
@@ -24,7 +24,7 @@ async function startServer() {
   app.get("/api/albums/:id", (req, res) => {
     const lang = req.query.lang || 'en';
     const album = db.prepare(`SELECT id, title_${lang} as title, description_${lang} as description, cover_image FROM albums WHERE id = ?`).get(req.params.id);
-    const artworks = db.prepare(`SELECT id, title_${lang} as title, image_url, year FROM artworks WHERE album_id = ?`).all(req.params.id);
+    const artworks = db.prepare(`SELECT id, title_${lang} as title, image_url, audio_url, year FROM artworks WHERE album_id = ? ORDER BY id ASC`).all(req.params.id);
     res.json({ ...album, artworks });
   });
 

@@ -1,6 +1,15 @@
 import { motion } from 'motion/react';
-import { ArrowRight, ExternalLink } from 'lucide-react';
+import { ArrowRight, ExternalLink, BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+interface Album {
+  id: number;
+  title: string;
+  description: string;
+  cover_image: string;
+}
 
 const museums = [
   {
@@ -67,6 +76,13 @@ const museums = [
 
 const Gallery = () => {
   const { t, i18n } = useTranslation();
+  const [albums, setAlbums] = useState<Album[]>([]);
+
+  useEffect(() => {
+    fetch(`/api/albums?lang=${i18n.language.split('-')[0]}`)
+      .then(res => res.json())
+      .then(data => setAlbums(data));
+  }, [i18n.language]);
 
   const getLocalizedText = (item: any) => {
     if (i18n.language.startsWith('ru')) return item.ru;
@@ -87,7 +103,42 @@ const Gallery = () => {
             {t('gallery.title')}
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
+          {/* Internal Albums Section */}
+          <div className="mb-32">
+            <h2 className="text-xs uppercase tracking-[0.4em] text-white/40 mb-12 font-bold">{t('gallery.internal_albums')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {albums.map((album, i) => (
+                <motion.div
+                  key={album.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-zinc-900"
+                >
+                  <Link to={`/gallery/${album.id}`} className="block w-full h-full">
+                    <img
+                      src={album.cover_image}
+                      alt={album.title}
+                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end">
+                      <h3 className="text-2xl font-serif text-white mb-2">{album.title}</h3>
+                      <p className="text-white/40 text-sm line-clamp-2 mb-6 font-serif italic">{album.description}</p>
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-white/60 group-hover:text-white transition-colors">
+                        {t('gallery.open_album')} <ArrowRight size={14} />
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* External Museums Section */}
+          <div>
+            <h2 className="text-xs uppercase tracking-[0.4em] text-white/40 mb-12 font-bold">{t('gallery.external_museums')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
             {museums.map((museum, i) => (
               <motion.div
                 key={museum.id}
@@ -101,7 +152,6 @@ const Gallery = () => {
                   <img
                     src={museum.image}
                     alt={getLocalizedText(museum.title)}
-                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
@@ -121,9 +171,10 @@ const Gallery = () => {
               </motion.div>
             ))}
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </div>
+  </div>
   );
 };
 

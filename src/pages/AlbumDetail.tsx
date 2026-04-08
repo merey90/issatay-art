@@ -1,13 +1,14 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, X, Maximize2 } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, X, Maximize2, Music } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface Artwork {
   id: number;
   title: string;
   image_url: string;
+  audio_url?: string;
   year: string;
 }
 
@@ -15,11 +16,13 @@ interface Album {
   id: number;
   title: string;
   description: string;
+  cover_image: string;
   artworks: Artwork[];
 }
 
 const AlbumDetail = () => {
-  const { id } = useParams();
+  const { id, trackId } = useParams();
+  const navigate = useNavigate();
   const [album, setAlbum] = useState<Album | null>(null);
   const [selectedImage, setSelectedImage] = useState<Artwork | null>(null);
   const { t, i18n } = useTranslation();
@@ -27,14 +30,45 @@ const AlbumDetail = () => {
   useEffect(() => {
     fetch(`/api/albums/${id}?lang=${i18n.language.split('-')[0]}`)
       .then(res => res.json())
-      .then(data => setAlbum(data));
-  }, [id, i18n.language]);
+      .then(data => {
+        setAlbum(data);
+        // If trackId is in URL, find and select it (trackId in URL is 1-based index)
+        if (trackId && data.artworks) {
+          const index = parseInt(trackId) - 1;
+          if (index >= 0 && index < data.artworks.length) {
+            setSelectedImage(data.artworks[index]);
+          }
+        }
+      });
+  }, [id, i18n.language, trackId]);
+
+  const handleOpenArtwork = (artwork: Artwork, index: number) => {
+    setSelectedImage(artwork);
+    // Use 1-based index for the URL to avoid database ID offsets
+    navigate(`/gallery/${id}/${index + 1}`, { replace: true });
+  };
+
+  const handleCloseArtwork = () => {
+    setSelectedImage(null);
+    navigate(`/gallery/${id}`, { replace: true });
+  };
 
   if (!album) return <div className="min-h-screen bg-black flex items-center justify-center text-white/20 uppercase tracking-widest">{t('album.loading')}</div>;
 
   return (
-    <div className="min-h-screen bg-black py-32 px-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-black py-32 px-6 relative overflow-hidden">
+      {album.title === 'The Book World' && (
+        <div 
+          className="absolute inset-0 opacity-10 pointer-events-none grayscale"
+          style={{ 
+            backgroundImage: `url(${album.cover_image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'blur(100px)'
+          }}
+        />
+      )}
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -49,7 +83,7 @@ const AlbumDetail = () => {
             <p className="text-white/40 max-w-2xl text-lg font-serif italic">{album.description}</p>
           </div>
 
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {album.artworks.map((artwork, i) => (
               <motion.div
                 key={artwork.id}
@@ -57,19 +91,21 @@ const AlbumDetail = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="relative group cursor-pointer overflow-hidden rounded-xl bg-zinc-900"
-                onClick={() => setSelectedImage(artwork)}
+                className="relative group cursor-pointer overflow-hidden rounded-xl bg-zinc-900 aspect-square"
+                onClick={() => handleOpenArtwork(artwork, i)}
               >
                 <img
                   src={artwork.image_url}
                   alt={artwork.title}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                   <h4 className="text-white font-serif text-lg">{artwork.title}</h4>
                   <p className="text-white/60 text-xs uppercase tracking-widest">{artwork.year}</p>
-                  <Maximize2 className="absolute top-6 right-6 text-white/40" size={18} />
+                  <div className="absolute top-6 right-6 flex gap-3">
+                    {artwork.audio_url && <Music className="text-white/60" size={18} />}
+                    <Maximize2 className="text-white/40" size={18} />
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -85,9 +121,12 @@ const AlbumDetail = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 md:p-12"
-            onClick={() => setSelectedImage(null)}
+            onClick={handleCloseArtwork}
           >
-            <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
+            <button 
+              className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors"
+              onClick={handleCloseArtwork}
+            >
               <X size={32} />
             </button>
             <motion.div
@@ -100,12 +139,24 @@ const AlbumDetail = () => {
               <img
                 src={selectedImage.image_url}
                 alt={selectedImage.title}
-                referrerPolicy="no-referrer"
                 className="max-w-full max-h-[80vh] object-contain shadow-2xl"
               />
-              <div className="text-center">
+              <div className="text-center w-full max-w-2xl">
                 <h3 className="text-2xl font-serif text-white mb-2">{selectedImage.title}</h3>
-                <p className="text-white/40 uppercase tracking-widest text-xs">{selectedImage.year}</p>
+                <p className="text-white/40 uppercase tracking-widest text-xs mb-8">{selectedImage.year}</p>
+                
+                {selectedImage.audio_url && (
+                  <div className="bg-white/5 p-6 rounded-2xl border border-white/10 w-full">
+                    <audio 
+                      controls 
+                      className="w-full h-12 invert opacity-80"
+                      autoPlay={false}
+                    >
+                      <source src={selectedImage.audio_url} type="audio/mpeg" />
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>

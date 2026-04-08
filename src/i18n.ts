@@ -47,6 +47,9 @@ const resources = {
         title: 'GALLERY',
         view_album: 'View Album',
         view_museum: 'Visit Museum',
+        internal_albums: 'Digital Archive',
+        external_museums: 'Museum Collections',
+        open_album: 'Open Album',
       },
       album: {
         back: 'Back to Gallery',
@@ -107,6 +110,9 @@ const resources = {
         title: 'ГАЛЕРЕЯ',
         view_album: 'Смотреть альбом',
         view_museum: 'Посетить музей',
+        internal_albums: 'Цифровой архив',
+        external_museums: 'Музейные коллекции',
+        open_album: 'Открыть альбом',
       },
       album: {
         back: 'Назад в галерею',
@@ -167,6 +173,9 @@ const resources = {
         title: 'ГАЛЕРЕЯ',
         view_album: 'Альбомды көру',
         view_museum: 'Мұражайға бару',
+        internal_albums: 'Цифрлық мұрағат',
+        external_museums: 'Мұражай топтамалары',
+        open_album: 'Альбомды ашу',
       },
       album: {
         back: 'Галереяға оралу',
