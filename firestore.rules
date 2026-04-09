@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "merey.90@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    // Albums: Publicly readable, admin writable
+    match /albums/{albumId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Artworks: Publicly readable, admin writable
+    match /artworks/{artworkId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

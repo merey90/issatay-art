@@ -54,6 +54,7 @@ const resources = {
       album: {
         back: 'Back to Gallery',
         loading: 'Loading...',
+        audio_missing: 'Audio track not available for this language yet.',
       },
       news: {
         label: 'Updates',
@@ -117,6 +118,7 @@ const resources = {
       album: {
         back: 'Назад в галерею',
         loading: 'Загрузка...',
+        audio_missing: 'Аудиозапись для этого языка пока недоступна.',
       },
       news: {
         label: 'Обновления',
@@ -180,6 +182,7 @@ const resources = {
       album: {
         back: 'Галереяға оралу',
         loading: 'Жүктелуде...',
+        audio_missing: 'Бұл тілдегі аудиожазба әлі қолжетімді емес.',
       },
       news: {
         label: 'Жаңартулар',

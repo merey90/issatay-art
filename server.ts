@@ -24,8 +24,35 @@ async function startServer() {
   app.get("/api/albums/:id", (req, res) => {
     const lang = req.query.lang || 'en';
     const album = db.prepare(`SELECT id, title_${lang} as title, description_${lang} as description, cover_image FROM albums WHERE id = ?`).get(req.params.id);
-    const artworks = db.prepare(`SELECT id, title_${lang} as title, image_url, audio_url, year FROM artworks WHERE album_id = ? ORDER BY id ASC`).all(req.params.id);
-    res.json({ ...album, artworks });
+    
+    // Fetch artworks with all language audio URLs for fallback logic
+    const artworksRaw = db.prepare(`SELECT id, title_${lang} as title, description_${lang} as description, image_url, audio_url_en, audio_url_ru, audio_url_kk, year FROM artworks WHERE album_id = ? ORDER BY id ASC`).all(req.params.id);
+    
+    const artworks = artworksRaw.map((art: any) => {
+      // Fallback logic: current lang -> ru -> en
+      let audio_url = art[`audio_url_${lang}`];
+      if (!audio_url) audio_url = art.audio_url_ru;
+      if (!audio_url) audio_url = art.audio_url_en;
+
+      if (!audio_url) {
+        console.warn(`[Audio Warning] No audio track found for Artwork ID: ${art.id} ("${art.title}") in language: ${lang} (or fallbacks RU/EN)`);
+      }
+
+      return {
+        id: art.id,
+        title: art.title,
+        description: art.description,
+        image_url: art.image_url,
+        audio_url: audio_url || null,
+        year: art.year
+      };
+    });
+
+    if (!album) {
+      return res.status(404).json({ error: 'Album not found' });
+    }
+
+    res.json({ ...(album as object), artworks });
   });
 
   app.get("/api/news", (req, res) => {

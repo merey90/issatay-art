@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "Album": {
+      "title": "Album",
+      "description": "An art album containing multiple artworks",
+      "type": "object",
+      "properties": {
+        "title_en": { "type": "string" },
+        "title_ru": { "type": "string" },
+        "title_kk": { "type": "string" },
+        "description_en": { "type": "string" },
+        "description_ru": { "type": "string" },
+        "description_kk": { "type": "string" },
+        "cover_image": { "type": "string" }
+      },
+      "required": ["title_en", "cover_image"]
+    },
+    "Artwork": {
+      "title": "Artwork",
+      "description": "An individual artwork within an album",
+      "type": "object",
+      "properties": {
+        "album_id": { "type": "string" },
+        "title_en": { "type": "string" },
+        "title_ru": { "type": "string" },
+        "title_kk": { "type": "string" },
+        "description_en": { "type": "string" },
+        "description_ru": { "type": "string" },
+        "description_kk": { "type": "string" },
+        "image_url": { "type": "string" },
+        "audio_url_en": { "type": "string" },
+        "audio_url_ru": { "type": "string" },
+        "audio_url_kk": { "type": "string" },
+        "year": { "type": "string" }
+      },
+      "required": ["album_id", "title_en", "image_url"]
+    }
+  },
+  "firestore": {
+    "/albums/{albumId}": {
+      "schema": "Album",
+      "description": "Collection of art albums"
+    },
+    "/artworks/{artworkId}": {
+      "schema": "Artwork",
+      "description": "Collection of individual artworks"
+    }
+  }
+}

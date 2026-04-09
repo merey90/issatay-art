@@ -29,8 +29,13 @@ db.exec(`
     title_en TEXT,
     title_ru TEXT,
     title_kk TEXT,
+    description_en TEXT,
+    description_ru TEXT,
+    description_kk TEXT,
     image_url TEXT NOT NULL,
-    audio_url TEXT,
+    audio_url_en TEXT,
+    audio_url_ru TEXT,
+    audio_url_kk TEXT,
     year TEXT,
     FOREIGN KEY(album_id) REFERENCES albums(id)
   );
@@ -61,18 +66,40 @@ db.exec(`
   );
 `);
 
-// Migration: Add audio_url to artworks if it doesn't exist
+// Migration: Add multi-language audio columns if they don't exist
 try {
-  db.exec('ALTER TABLE artworks ADD COLUMN audio_url TEXT');
-} catch (e) {
-  // Column might already exist
-}
+  db.exec('ALTER TABLE artworks ADD COLUMN audio_url_en TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE artworks ADD COLUMN audio_url_ru TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE artworks ADD COLUMN audio_url_kk TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE artworks ADD COLUMN description_en TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE artworks ADD COLUMN description_ru TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE artworks ADD COLUMN description_kk TEXT');
+} catch (e) {}
 
 // Cleanup and Rename for "The Book World"
 const cleanupArtworks = db.prepare("DELETE FROM artworks WHERE album_id IN (SELECT id FROM albums WHERE title_en IN ('The Path of Abai', 'Steppe Legends'))").run();
 const cleanupAlbums = db.prepare("DELETE FROM albums WHERE title_en IN ('The Path of Abai', 'Steppe Legends')").run();
 const updateAlbum = db.prepare("UPDATE albums SET title_en = 'The Book World', cover_image = '/book_world_bg.png' WHERE title_en = 'Book World' OR title_en = 'The Book World'").run();
-const updateArtworks = db.prepare("UPDATE artworks SET image_url = '/book_world_bg.png', audio_url = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3' WHERE album_id IN (SELECT id FROM albums WHERE title_en = 'The Book World')").run();
+
+// Update artworks to use the new multi-language columns (only if they are empty)
+const updateArtworks = db.prepare(`
+  UPDATE artworks 
+  SET audio_url_en = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
+      audio_url_ru = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
+      audio_url_kk = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3'
+  WHERE album_id IN (SELECT id FROM albums WHERE title_en = 'The Book World')
+  AND audio_url_en IS NULL AND audio_url_ru IS NULL AND audio_url_kk IS NULL
+`).run();
 
 console.log('Database Cleanup/Update:', {
   artworksDeleted: cleanupArtworks.changes,
@@ -107,7 +134,7 @@ Issatay Issabayev was a legendary Kazakh graphic artist and painter. An Honored 
 const albumCount = db.prepare('SELECT count(*) as count FROM albums').get() as { count: number };
 if (albumCount.count === 0) {
   const insertAlbum = db.prepare('INSERT INTO albums (title_en, title_ru, title_kk, description_en, description_ru, description_kk, cover_image) VALUES (?, ?, ?, ?, ?, ?, ?)');
-  const insertArtwork = db.prepare('INSERT INTO artworks (album_id, title_en, title_ru, title_kk, image_url, audio_url, year) VALUES (?, ?, ?, ?, ?, ?, ?)');
+  const insertArtwork = db.prepare('INSERT INTO artworks (album_id, title_en, title_ru, title_kk, image_url, audio_url_en, audio_url_ru, audio_url_kk, year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
 
   const album3 = insertAlbum.run(
     'The Book World', 'Книжный мир', 'Кітап әлемі',
@@ -120,6 +147,8 @@ if (albumCount.count === 0) {
       album3, 
       `Audio Track ${i}`, `Аудио трек ${i}`, `Аудио трек ${i}`,
       '/book_world_bg.png',
+      'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
+      'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
       'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
       '2024'
     );

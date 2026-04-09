@@ -1,12 +1,13 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, X, Maximize2, Music } from 'lucide-react';
+import { ArrowLeft, X, Maximize2, Music, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface Artwork {
   id: number;
   title: string;
+  description?: string;
   image_url: string;
   audio_url?: string;
   year: string;
@@ -25,6 +26,9 @@ const AlbumDetail = () => {
   const navigate = useNavigate();
   const [album, setAlbum] = useState<Album | null>(null);
   const [selectedImage, setSelectedImage] = useState<Artwork | null>(null);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const [isSpeedOpen, setIsSpeedOpen] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
@@ -46,6 +50,12 @@ const AlbumDetail = () => {
     }
   }, [album, trackId]);
 
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = playbackRate;
+    }
+  }, [playbackRate, selectedImage]);
+
   const handleOpenArtwork = (artwork: Artwork, index: number) => {
     setSelectedImage(artwork);
     // Use 1-based index for the URL to avoid database ID offsets
@@ -56,6 +66,8 @@ const AlbumDetail = () => {
     setSelectedImage(null);
     navigate(`/gallery/${id}`);
   };
+
+  const speedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
   if (!album) return <div className="min-h-screen flex items-center justify-center uppercase tracking-widest opacity-20" style={{ backgroundColor: 'var(--app-bg)', color: 'var(--app-text)' }}>{t('album.loading')}</div>;
 
@@ -125,12 +137,12 @@ const AlbumDetail = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12 backdrop-blur-md"
+            className="fixed inset-0 z-40 flex flex-col items-center p-6 pt-24 pb-12 backdrop-blur-md overflow-y-auto"
             style={{ backgroundColor: 'var(--nav-bg)' }}
             onClick={handleCloseArtwork}
           >
             <button 
-              className="absolute top-8 right-8 opacity-30 hover:opacity-100 transition-opacity"
+              className="fixed top-24 right-8 opacity-30 hover:opacity-100 transition-opacity z-50"
               style={{ color: 'var(--app-text)' }}
               onClick={handleCloseArtwork}
             >
@@ -140,31 +152,94 @@ const AlbumDetail = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="max-w-5xl w-full h-full flex flex-col items-center justify-center gap-8"
+              className="max-w-5xl w-full flex flex-col items-center gap-6"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={selectedImage.image_url}
-                alt={selectedImage.title}
-                className="max-w-full max-h-[70vh] object-contain shadow-2xl border"
-                style={{ borderColor: 'var(--card-border)' }}
-              />
-              <div className="text-center w-full max-w-2xl">
-                <h3 className="text-2xl font-serif mb-2" style={{ color: 'var(--app-text)' }}>{selectedImage.title}</h3>
-                <p className="incised-text mb-8" style={{ color: 'var(--incised-text-color)' }}>{selectedImage.year}</p>
-                
-                {selectedImage.audio_url && (
-                  <div className="p-6 rounded-sm border w-full shadow-sm" style={{ backgroundColor: 'var(--app-bg)', borderColor: 'var(--card-border)' }}>
-                    <audio 
-                      controls 
-                      className="w-full h-10 opacity-80 hover:opacity-100 transition-opacity"
-                      autoPlay={false}
-                    >
-                      <source src={selectedImage.audio_url} type="audio/mpeg" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </div>
-                )}
+              <div className="relative overflow-hidden rounded-sm shadow-2xl border w-full max-w-3xl" style={{ borderColor: 'var(--card-border)' }}>
+                <img
+                  src={selectedImage.image_url}
+                  alt={selectedImage.title}
+                  className="w-full max-h-[50vh] md:max-h-[60vh] object-contain"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 pointer-events-none text-center" 
+                     style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)' }}>
+                  <h3 className="text-xl md:text-2xl font-serif mb-1" style={{ color: '#FFFFFF' }}>{selectedImage.title}</h3>
+                  {selectedImage.description && (
+                    <p className="text-[10px] md:text-xs font-serif italic opacity-80 mb-2" style={{ color: '#FFFFFF' }}>
+                      {selectedImage.description}
+                    </p>
+                  )}
+                  <p className="incised-text text-[10px] md:text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{selectedImage.year}</p>
+                </div>
+              </div>
+
+              <div className="w-full max-w-2xl">
+                <div className="p-4 rounded-sm border w-full shadow-sm flex items-center gap-4" style={{ backgroundColor: 'var(--app-bg)', borderColor: 'var(--card-border)' }}>
+                  {selectedImage.audio_url ? (
+                    <>
+                      <audio 
+                        ref={audioRef}
+                        controls 
+                        controlsList="nodownload noplaybackrate"
+                        className="flex-1 h-10 opacity-80 hover:opacity-100 transition-opacity"
+                        autoPlay={false}
+                        key={selectedImage.audio_url} // Force re-render when URL changes
+                      >
+                        <source src={selectedImage.audio_url} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                      
+                      <div className="relative">
+                        <button 
+                          onClick={() => setIsSpeedOpen(!isSpeedOpen)}
+                          className="flex items-center gap-2 px-3 py-2 rounded-sm border transition-all hover:opacity-100 opacity-60 text-[10px] font-mono uppercase tracking-widest"
+                          style={{ borderColor: 'var(--card-border)', color: 'var(--app-text)' }}
+                        >
+                          {playbackRate}x <ChevronDown size={12} className={`transition-transform duration-300 ${isSpeedOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        
+                        <AnimatePresence>
+                          {isSpeedOpen && (
+                            <motion.div 
+                              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                              className="absolute bottom-full right-0 mb-2 min-w-[80px] border shadow-2xl rounded-sm overflow-hidden z-50"
+                              style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}
+                            >
+                              {speedOptions.map((speed) => (
+                                <button
+                                  key={speed}
+                                  onClick={() => {
+                                    setPlaybackRate(speed);
+                                    setIsSpeedOpen(false);
+                                  }}
+                                  className={`w-full px-4 py-2 text-[10px] font-mono text-left transition-colors ${
+                                    playbackRate === speed 
+                                      ? 'bg-zinc-900 text-white dark:bg-white dark:text-black' 
+                                      : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                                  }`}
+                                  style={{ 
+                                    color: playbackRate === speed ? '' : 'var(--app-text)'
+                                  }}
+                                >
+                                  {speed}x
+                                </button>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex-1 py-2 flex items-center justify-center gap-3 opacity-40">
+                      <Music size={16} />
+                      <span className="text-xs uppercase tracking-widest font-mono">
+                        {t('album.audio_missing')}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           </motion.div>
