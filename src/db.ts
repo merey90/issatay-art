@@ -94,9 +94,9 @@ const updateAlbum = db.prepare("UPDATE albums SET title_en = 'The Book World', c
 // Update artworks to use the new multi-language columns (only if they are empty)
 const updateArtworks = db.prepare(`
   UPDATE artworks 
-  SET audio_url_en = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
-      audio_url_ru = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
-      audio_url_kk = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3'
+  SET audio_url_en = NULL,
+      audio_url_ru = NULL,
+      audio_url_kk = NULL
   WHERE album_id IN (SELECT id FROM albums WHERE title_en = 'The Book World')
   AND audio_url_en IS NULL AND audio_url_ru IS NULL AND audio_url_kk IS NULL
 `).run();
@@ -147,9 +147,9 @@ if (albumCount.count === 0) {
       album3, 
       `Audio Track ${i}`, `Аудио трек ${i}`, `Аудио трек ${i}`,
       '/book_world_bg.png',
-      'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
-      'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
-      'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3',
+      null,
+      null,
+      null,
       '2024'
     );
   }

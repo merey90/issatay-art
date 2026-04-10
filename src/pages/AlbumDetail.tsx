@@ -41,9 +41,10 @@ const AlbumDetail = () => {
 
   useEffect(() => {
     if (album && trackId) {
-      const index = parseInt(trackId) - 1;
-      if (index >= 0 && index < album.artworks.length) {
-        setSelectedImage(album.artworks[index]);
+      const idNum = parseInt(trackId);
+      const artwork = album.artworks.find(a => a.id === idNum);
+      if (artwork) {
+        setSelectedImage(artwork);
       }
     } else {
       setSelectedImage(null);
@@ -56,10 +57,10 @@ const AlbumDetail = () => {
     }
   }, [playbackRate, selectedImage]);
 
-  const handleOpenArtwork = (artwork: Artwork, index: number) => {
+  const handleOpenArtwork = (artwork: Artwork) => {
     setSelectedImage(artwork);
-    // Use 1-based index for the URL to avoid database ID offsets
-    navigate(`/gallery/${id}/${index + 1}`);
+    // Use database ID for the URL to ensure stable links even if items are removed
+    navigate(`/gallery/${id}/${artwork.id}`);
   };
 
   const handleCloseArtwork = () => {
@@ -109,7 +110,7 @@ const AlbumDetail = () => {
                 transition={{ delay: i * 0.05 }}
                 className="relative group cursor-pointer overflow-hidden rounded-sm aspect-square transition-colors shadow-sm"
                 style={{ backgroundColor: 'var(--zinc-plate)', border: '1px solid var(--card-border)' }}
-                onClick={() => handleOpenArtwork(artwork, i)}
+                onClick={() => handleOpenArtwork(artwork)}
               >
                 <img
                   src={artwork.image_url}

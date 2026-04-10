@@ -29,13 +29,20 @@ async function startServer() {
     const artworksRaw = db.prepare(`SELECT id, title_${lang} as title, description_${lang} as description, image_url, audio_url_en, audio_url_ru, audio_url_kk, year FROM artworks WHERE album_id = ? ORDER BY id ASC`).all(req.params.id);
     
     const artworks = artworksRaw.map((art: any) => {
+      const placeholder = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3';
+      
+      // Helper to check if audio is actually present (not null and not placeholder)
+      const hasAudio = (url: string | null) => url && url !== placeholder;
+
       // Fallback logic: current lang -> ru -> en
       let audio_url = art[`audio_url_${lang}`];
-      if (!audio_url) audio_url = art.audio_url_ru;
-      if (!audio_url) audio_url = art.audio_url_en;
+      
+      if (!hasAudio(audio_url)) {
+        audio_url = hasAudio(art.audio_url_ru) ? art.audio_url_ru : (hasAudio(art.audio_url_en) ? art.audio_url_en : null);
+      }
 
-      if (!audio_url) {
-        console.warn(`[Audio Warning] No audio track found for Artwork ID: ${art.id} ("${art.title}") in language: ${lang} (or fallbacks RU/EN)`);
+      if (!audio_url || audio_url === placeholder) {
+        console.warn(`[Audio Warning] No real audio track found for Artwork ID: ${art.id} ("${art.title}") in language: ${lang} (or fallbacks RU/EN)`);
       }
 
       return {
