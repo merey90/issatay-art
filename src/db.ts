@@ -1,7 +1,25 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 
-const db = new Database('issatay.db');
+const dbPath = 'issatay.db';
+
+function createDb() {
+  try {
+    const db = new Database(dbPath);
+    // Test the connection
+    db.prepare('SELECT 1').get();
+    return db;
+  } catch (err) {
+    console.error('Database connection failed or corrupted, recreating...', err);
+    if (fs.existsSync(dbPath)) {
+      fs.unlinkSync(dbPath);
+    }
+    return new Database(dbPath);
+  }
+}
+
+const db = createDb();
 
 // Initialize schema
 db.exec(`

@@ -85,8 +85,8 @@ const Home = () => {
             transition={{ duration: 0.8 }}
           >
             <span className="incised-text mb-12 block">{t('home.legacy_label')}</span>
-            <h2 className="text-3xl lg:text-5xl font-serif italic leading-relaxed opacity-80">
-              "{t('home.quote')}"
+            <h2 className="text-3xl lg:text-5xl font-serif italic leading-relaxed opacity-80 whitespace-pre-line">
+              {t('home.quote')}
             </h2>
             <div className="w-24 h-px mx-auto mt-16" style={{ background: 'linear-gradient(to right, transparent, var(--card-border), transparent)' }} />
           </motion.div>
