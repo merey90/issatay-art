@@ -73,7 +73,7 @@ const AlbumDetail = () => {
   if (!album) return <div className="min-h-screen flex items-center justify-center uppercase tracking-widest opacity-20" style={{ backgroundColor: 'var(--app-bg)', color: 'var(--app-text)' }}>{t('album.loading')}</div>;
 
   return (
-    <div className="min-h-screen py-32 px-6 relative overflow-hidden transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
+    <div className="min-h-screen py-20 px-6 relative overflow-hidden transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
       {album.title === 'The Book World' && (
         <div 
           className="absolute inset-0 opacity-10 pointer-events-none grayscale"

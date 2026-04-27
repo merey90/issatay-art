@@ -9,7 +9,7 @@ const Events = () => {
   const lang = (i18n.language || 'en') as 'en' | 'ru' | 'kk';
 
   return (
-    <div className="min-h-screen py-32 px-6 relative transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
+    <div className="min-h-screen py-20 px-6 relative transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
       <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

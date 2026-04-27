@@ -71,6 +71,7 @@ const resources = {
         back: 'Back to events',
         schedule: 'Schedule',
         not_found: 'Event not found',
+        join_online: 'Join Online',
       },
       press: {
         label: 'Media Coverage',
@@ -147,6 +148,7 @@ const resources = {
         back: 'Назад к мероприятиям',
         schedule: 'Расписание',
         not_found: 'Мероприятие не найдено',
+        join_online: 'Подключиться онлайн',
       },
       press: {
         label: 'Освещение в СМИ',
@@ -223,6 +225,7 @@ const resources = {
         back: 'Іс-шараларға қайту',
         schedule: 'Кесте',
         not_found: 'Іс-шара табылмады',
+        join_online: 'Онлайн қосылу',
       },
       press: {
         label: 'БАҚ-та жариялануы',

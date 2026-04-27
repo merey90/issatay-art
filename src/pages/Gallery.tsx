@@ -91,7 +91,7 @@ const Gallery = () => {
   };
 
   return (
-    <div className="min-h-screen py-32 px-6 relative" style={{ backgroundColor: 'var(--app-bg)' }}>
+    <div className="min-h-screen py-20 px-6 relative" style={{ backgroundColor: 'var(--app-bg)' }}>
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
