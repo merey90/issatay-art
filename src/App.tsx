@@ -39,6 +39,8 @@ import Biography from './pages/Biography';
 import Gallery from './pages/Gallery';
 import AlbumDetail from './pages/AlbumDetail';
 import News from './pages/News';
+import Events from './pages/Events';
+import EventDetail from './pages/EventDetail';
 import Press from './pages/Press';
 
 // Theme Context
@@ -60,6 +62,7 @@ const Navbar = () => {
     { name: t('nav.biography'), path: '/biography' },
     { name: t('nav.gallery'), path: '/gallery' },
     { name: t('nav.news'), path: '/news' },
+    { name: t('nav.events'), path: '/events' },
     { name: t('nav.press'), path: '/press' },
   ];
 
@@ -245,6 +248,8 @@ export default function App() {
               <Route path="/gallery/:id" element={<AlbumDetail />} />
               <Route path="/gallery/:id/:trackId" element={<AlbumDetail />} />
               <Route path="/news" element={<News />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/press" element={<Press />} />
             </Routes>
           </AnimatePresence>

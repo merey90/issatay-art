@@ -10,6 +10,7 @@ const resources = {
         biography: 'Biography',
         gallery: 'Gallery',
         news: 'News',
+        events: 'Events',
         press: 'Press',
       },
       footer: {
@@ -60,6 +61,17 @@ const resources = {
         label: 'Updates',
         title: 'NEWS',
       },
+      events: {
+        label: 'Upcoming & Past',
+        title: 'EVENTS',
+        upcoming: 'Upcoming Events',
+        past: 'Past Events',
+        no_upcoming: 'No upcoming events at this time.',
+        details: 'Details',
+        back: 'Back to events',
+        schedule: 'Schedule',
+        not_found: 'Event not found',
+      },
       press: {
         label: 'Media Coverage',
         title: 'PRESS',
@@ -74,6 +86,7 @@ const resources = {
         biography: 'Биография',
         gallery: 'Галерея',
         news: 'Новости',
+        events: 'Мероприятия',
         press: 'Пресса',
       },
       footer: {
@@ -124,6 +137,17 @@ const resources = {
         label: 'Обновления',
         title: 'НОВОСТИ',
       },
+      events: {
+        label: 'Предстоящие и прошедшие',
+        title: 'МЕРОПРИЯТИЯ',
+        upcoming: 'Предстоящие мероприятия',
+        past: 'Прошедшие мероприятия',
+        no_upcoming: 'В настоящее время нет предстоящих мероприятий.',
+        details: 'Подробнее',
+        back: 'Назад к мероприятиям',
+        schedule: 'Расписание',
+        not_found: 'Мероприятие не найдено',
+      },
       press: {
         label: 'Освещение в СМИ',
         title: 'ПРЕССА',
@@ -138,6 +162,7 @@ const resources = {
         biography: 'Өмірбаян',
         gallery: 'Галерея',
         news: 'Жаңалықтар',
+        events: 'Іс-шаралар',
         press: 'Баспасөз',
       },
       footer: {
@@ -187,6 +212,17 @@ const resources = {
       news: {
         label: 'Жаңартулар',
         title: 'ЖАҢАЛЫҚТАР',
+      },
+      events: {
+        label: 'Алдағы және өткен',
+        title: 'ІС-ШАРАЛАР',
+        upcoming: 'Алдағы іс-шаралар',
+        past: 'Өткен іс-шаралар',
+        no_upcoming: 'Қазіргі уақытта алдағы іс-шаралар жоқ.',
+        details: 'Толығырақ',
+        back: 'Іс-шараларға қайту',
+        schedule: 'Кесте',
+        not_found: 'Іс-шара табылмады',
       },
       press: {
         label: 'БАҚ-та жариялануы',
