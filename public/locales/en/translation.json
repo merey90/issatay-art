@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "home": "Home",
+    "biography": "Biography",
+    "gallery": "Gallery",
+    "news": "News",
+    "events": "Events",
+    "press": "Press"
+  },
+  "footer": {
+    "archive": "Issatay Issabayev Archive",
+    "description": "Preserving the legacy of a People's Artist of Kazakhstan.",
+    "copyright": "© 2026 Issatay Issabayev"
+  },
+  "home": {
+    "title_top": "ISSATAY",
+    "title_bottom": "ISSABAYEV",
+    "subtitle": "The master of the line, the soul of the steppe. A luminary of Kazakhstan's national graphics.",
+    "view_gallery": "View Gallery",
+    "the_story": "The Story",
+    "featured_work": "Featured Work",
+    "legacy_label": "Legacy",
+    "quote": "There is the element of Water,\nThe element of Earth,\nThe element of Mountains...\nMy works are born from the element of the Soul!",
+    "archive_title": "The Archive",
+    "archive_desc": "A curated collection of graphic works and paintings.",
+    "news_title": "Latest News",
+    "news_desc": "Exhibitions, events, and new archival discoveries.",
+    "press_title": "Media & Press",
+    "press_desc": "Critical essays and interviews from the masters career.",
+    "explore": "Explore",
+    "read_more": "Read More",
+    "view_press": "View Press"
+  },
+  "biography": {
+    "label": "The Life of a Master",
+    "title": "BIOGRAPHY",
+    "milestones": "Key Milestones",
+    "studio_caption": "The artist in his studio, 1980"
+  },
+  "gallery": {
+    "label": "The Archive",
+    "title": "GALLERY",
+    "view_album": "View Album",
+    "view_museum": "Visit Museum",
+    "internal_albums": "Digital Archive",
+    "external_museums": "Museum Collections",
+    "open_album": "Open Album"
+  },
+  "album": {
+    "back": "Back to Gallery",
+    "loading": "Loading...",
+    "audio_missing": "Audio track not available for this language yet."
+  },
+  "news": {
+    "label": "Updates",
+    "title": "NEWS"
+  },
+  "events": {
+    "label": "Upcoming & Past",
+    "title": "EVENTS",
+    "upcoming": "Upcoming Events",
+    "past": "Past Events",
+    "no_upcoming": "No upcoming events at this time.",
+    "details": "Details",
+    "back": "Back to events",
+    "schedule": "Schedule",
+    "not_found": "Event not found",
+    "join_online": "Join Online"
+  },
+  "press": {
+    "label": "Media Coverage",
+    "title": "PRESS",
+    "read_full": "Read Full Article"
+  }
+}

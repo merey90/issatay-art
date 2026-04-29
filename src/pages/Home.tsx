@@ -72,7 +72,7 @@ const Home = () => {
       </section>
 
       {/* Featured Quote Section */}
-      <section className="py-48 px-6 relative" style={{ backgroundColor: 'var(--app-bg)' }}>
+      <section className="py-24 lg:py-48 px-6 relative" style={{ backgroundColor: 'var(--app-bg)' }}>
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <div className="absolute top-1/2 left-0 w-full scratch-line -rotate-12" />
           <div className="absolute top-1/2 left-0 w-full scratch-line rotate-12" />
@@ -84,17 +84,17 @@ const Home = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span className="incised-text mb-12 block">{t('home.legacy_label')}</span>
+            <span className="incised-text mb-8 lg:mb-12 block">{t('home.legacy_label')}</span>
             <h2 className="text-3xl lg:text-5xl font-serif italic leading-relaxed opacity-80 whitespace-pre-line">
               {t('home.quote')}
             </h2>
-            <div className="w-24 h-px mx-auto mt-16" style={{ background: 'linear-gradient(to right, transparent, var(--card-border), transparent)' }} />
+            <div className="w-16 lg:w-24 h-px mx-auto mt-12 lg:mt-16" style={{ background: 'linear-gradient(to right, transparent, var(--card-border), transparent)' }} />
           </motion.div>
         </div>
       </section>
 
       {/* Quick Links Grid */}
-      <section className="py-32 px-6 max-w-7xl mx-auto relative z-10">
+      <section className="pb-24 lg:pb-32 pt-8 lg:pt-16 px-6 max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {[
             { title: t('home.archive_title'), desc: t('home.archive_desc'), link: '/gallery', label: t('home.explore') },

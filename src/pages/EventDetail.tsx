@@ -101,52 +101,54 @@ const EventDetail = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto relative z-10 mt-2">
-        {event.schedules && event.schedules.length > 0 && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="relative overflow-hidden"
-          >
-            <h2 className="text-3xl font-serif mb-6" style={{ color: 'var(--app-text)' }}>
-              {t('events.schedule')}
-            </h2>
-            <div className="metal-plate p-6 md:p-8 -mx-6 sm:mx-0 relative overflow-hidden">
-              <div className="space-y-4">
-              {event.schedules.map((schedule, sIndex) => (
-                <div key={sIndex} className="flex flex-col md:flex-row gap-4 md:gap-6 relative group">
-                  <div className="md:w-48 shrink-0 flex items-start gap-3 font-mono text-lg uppercase tracking-widest opacity-60 pt-1">
-                    <Clock className="min-w-5 mt-0.5" size={20} />
-                    {schedule.time}
-                  </div>
-                  <div className="flex-1 pb-4 border-b border-white/10 group-last:border-0 group-last:pb-0" style={{ borderColor: 'var(--card-border)' }}>
-                    <div 
-                      className={`flex items-center gap-3 font-bold text-xl mb-3 transition-colors ${schedule.bio ? 'cursor-pointer hover:opacity-80' : ''}`} 
-                      style={{ color: 'var(--app-text)' }}
-                      onClick={() => handleSpeakerClick(schedule)}
-                    >
-                      <User className="opacity-60 shrink-0" size={20} />
-                      <span className={schedule.bio ? 'underline decoration-1 underline-offset-4 decoration-dotted' : ''}>
-                        {schedule.speaker[lang] || schedule.speaker.en}
-                      </span>
-                      {schedule.bio && (
-                        <Info size={16} className="opacity-40 shrink-0" />
+      <div className="px-6">
+        <div className="max-w-4xl mx-auto relative z-10 mt-2">
+          {event.schedules && event.schedules.length > 0 && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="relative overflow-hidden"
+            >
+              <h2 className="text-3xl font-serif mb-6" style={{ color: 'var(--app-text)' }}>
+                {t('events.schedule')}
+              </h2>
+              <div className="metal-plate p-6 md:p-8 relative overflow-hidden">
+                <div className="space-y-4">
+                {event.schedules.map((schedule, sIndex) => (
+                  <div key={sIndex} className="flex flex-col md:flex-row gap-4 md:gap-6 relative group">
+                    <div className="md:w-48 shrink-0 flex items-start gap-3 font-mono text-lg uppercase tracking-widest opacity-60 pt-1">
+                      <Clock className="min-w-5 mt-0.5" size={20} />
+                      {schedule.time}
+                    </div>
+                    <div className="flex-1 pb-4 border-b border-white/10 group-last:border-0 group-last:pb-0" style={{ borderColor: 'var(--card-border)' }}>
+                      <div 
+                        className={`flex items-center gap-3 font-bold text-xl mb-3 transition-colors ${schedule.bio ? 'cursor-pointer hover:opacity-80' : ''}`} 
+                        style={{ color: 'var(--app-text)' }}
+                        onClick={() => handleSpeakerClick(schedule)}
+                      >
+                        <User className="opacity-60 shrink-0" size={20} />
+                        <span className={schedule.bio ? 'underline decoration-1 underline-offset-4 decoration-dotted' : ''}>
+                          {schedule.speaker[lang] || schedule.speaker.en}
+                        </span>
+                        {schedule.bio && (
+                          <Info size={16} className="opacity-40 shrink-0" />
+                        )}
+                      </div>
+                      {schedule.topic && (
+                        <div className="text-lg font-serif italic leading-relaxed opacity-80" style={{ color: 'var(--app-text)' }}>
+                          {schedule.topic[lang] || schedule.topic.en}
+                        </div>
                       )}
                     </div>
-                    {schedule.topic && (
-                      <div className="text-lg font-serif italic leading-relaxed opacity-80" style={{ color: 'var(--app-text)' }}>
-                        {schedule.topic[lang] || schedule.topic.en}
-                      </div>
-                    )}
                   </div>
+                ))}
                 </div>
-              ))}
               </div>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
+        </div>
       </div>
 
       {/* Bio Modal */}

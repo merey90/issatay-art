@@ -179,6 +179,11 @@ const Navbar = () => {
 const Footer = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <footer className="border-t py-12 px-6 transition-colors duration-300" style={{ backgroundColor: 'var(--footer-bg)', borderColor: 'var(--footer-border)' }}>
@@ -196,11 +201,11 @@ const Footer = () => {
           <p className="incised-text">{t('footer.copyright')}</p>
           <button 
             onClick={toggleTheme}
-            className="p-2 rounded-full border transition-all hover:scale-110"
+            className="p-2 rounded-full border transition-all hover:scale-110 w-[36px] h-[36px] flex items-center justify-center"
             style={{ borderColor: 'var(--card-border)', color: 'var(--app-text)' }}
             aria-label="Toggle theme"
           >
-            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            {mounted ? (theme === 'light' ? <Moon size={18} /> : <Sun size={18} />) : null}
           </button>
         </div>
       </div>

@@ -33,7 +33,7 @@ export const eventsData: Event[] = [
       en: 'Dedicated to conceptualizing the artistic heritage of Issatay Issabayev: his role in shaping the Kazakh national art school, the significance of his work in the contemporary cultural context, as well as issues of preserving, researching and popularizing his works in Kazakhstan and abroad.',
       kk: 'Исатай Исабаевтың көркем мұрасын ұғынуға: оның қазақстандық ұлттық көркемсурет мектебін қалыптастырудағы рөліне, оның шығармашылығының заманауи мәдени контекстегі маңызына, сондай-ақ оның еңбектерін Қазақстанда және шетелде сақтау, зерттеу және дәріптеу мәселелеріне арналған.'
     },
-    onlineLink: '#',
+    onlineLink: 'https://us06web.zoom.us/j/89402757653?pwd=xMwGGLkDorP6WJaXsXoKjXl4ExXsfi.1',
     onlineInfo: {
       ru: 'Ссылка для подключения к круглому столу онлайн.\nНачало круглого стола в 15.00 (время Алматы, Казахстан)',
       en: 'Link to join the round table online.\nThe round table starts at 15.00 (Almaty time, Kazakhstan)',
@@ -120,9 +120,9 @@ export const eventsData: Event[] = [
           kk: 'Байғұтов Кәрім Әлімханұлы'
         },
         topic: {
-          ru: '«Возрождение наследия национальной графики через подход Design Thinking: творчество Исатая Исабаева и интерпретация казахской мифологии в художественном образовании»',
-          en: '«Modernization of national graphics heritage through the Design Thinking approach: the work of Issatay Issabayev and the interpretation of Kazakh mythology in art education»',
-          kk: '«Design Thinking тәсілі арқылы ұлттық графика мұрасын жаңғырту: Исатай Исабаев шығармашылығы және қазақ мифологиясының көркем білімдегі интерпретациясы»'
+          ru: '“Возрождение наследия национальной графики через подход Design Thinking: творчество Исатая Исабаева и интерпретация казахской мифологии в художественном образовании”',
+          en: '“Modernization of national graphics heritage through the Design Thinking approach: the work of Issatay Issabayev and the interpretation of Kazakh mythology in art education”',
+          kk: '“Design Thinking тәсілі арқылы ұлттық графика мұрасын жаңғырту: Исатай Исабаев шығармашылығы және қазақ мифологиясының көркем білімдегі интерпретациясы”'
         },
         bio: {
           ru: 'Доктор философии PhD, декан факультета искусств КазНПУ имени Абая.',
@@ -175,7 +175,7 @@ export const eventsData: Event[] = [
         },
         topic: {
           ru: '“Суреткер”',
-          en: '“Artist”',
+          en: '“Suretker”',
           kk: '“Суреткер”'
         },
         bio: {
@@ -264,9 +264,9 @@ export const eventsData: Event[] = [
           kk: 'Исабаева Естібала Нұрышқызы'
         },
         topic: {
-          ru: '“Среда формирования художника и работа над книгой и “Жазушы”',
-          en: '“The environment of the artist’s formation and work on the book and \'Zhazushy\'”',
-          kk: '“Суретшінің қалыптасу ортасы және кітап пен “Жазушы” баспасымен жұмысы”'
+          ru: '“Среда формирования художника и работа над книгой и «Жазушы»”',
+          en: '“The environment of the artist’s formation and work on the book and «Zhazushy»”',
+          kk: '“Суретшінің қалыптасу ортасы және кітап пен «Жазушы» баспасымен жұмысы”'
         },
         bio: {
           ru: 'Сестра Исатая Исабаева.',
@@ -296,13 +296,13 @@ export const eventsData: Event[] = [
         time: '16.00-16.04',
         speaker: {
           ru: 'Инга Латсе',
-          en: 'Inga Latse',
+          en: 'Inga Lace',
           kk: 'Инга Латсе'
         },
         topic: {
-          ru: 'Частные коллекции и музейные инициативы в сохранении наследия художника',
-          en: 'Private collections and museum initiatives in preserving the artist\'s legacy',
-          kk: 'Суретші мұрасын сақтаудағы жеке топтамалар және музейлік бастамалар'
+          ru: '“Частные коллекции и музейные инициативы в сохранении наследия художника”',
+          en: '“Private collections and museum initiatives in preserving the artist\'s legacy”',
+          kk: '“Суретші мұрасын сақтаудағы жеке топтамалар және музейлік бастамалар”'
         },
         bio: {
           ru: 'Международный исследователь искусства, главный куратор Almaty Museum of Arts.',
@@ -336,9 +336,9 @@ export const eventsData: Event[] = [
           kk: 'Төленова Меруерт Қайырғазықызы'
         },
         topic: {
-          ru: 'Наследие Исатая Исабаева: стратегии сохранения, исследования и популяризации творчества художника в Казахстане и за рубежом',
-          en: 'The legacy of Issatay Issabayev: strategies for the preservation, study, and popularization of the artist\'s work in Kazakhstan and abroad',
-          kk: 'Исатай Исабаев мұрасы: Қазақстанда және шетелде суретші шығармашылығын сақтау, зерттеу және дәріптеу стратегиялары'
+          ru: '“Наследие Исатая Исабаева: стратегии сохранения, исследования и популяризации творчества художника в Казахстане и за рубежом”',
+          en: '“The legacy of Issatay Issabayev: strategies for the preservation, study, and popularization of the artist\'s work in Kazakhstan and abroad”',
+          kk: '“Исатай Исабаев мұрасы: Қазақстанда және шетелде суретші шығармашылығын сақтау, зерттеу және дәріптеу стратегиялары”'
         },
         bio: {
           ru: 'Кандидат искусствоведения, культуролог, музыкант, куратор, внучка Исатая Исабаева.',

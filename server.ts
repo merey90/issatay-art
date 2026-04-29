@@ -1,96 +1,57 @@
-import express from "express";
-import { createServer as createViteServer } from "vite";
-import db from "./src/db.ts";
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { createServer as createViteServer } from 'vite';
 
-async function startServer() {
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+async function createServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json());
-
-  // API Routes
-  app.get("/api/biography", (req, res) => {
-    const lang = req.query.lang || 'en';
-    const bio = db.prepare(`SELECT content_${lang} as content FROM biography WHERE id = 1`).get();
-    res.json(bio);
-  });
-
-  app.get("/api/albums", (req, res) => {
-    const lang = req.query.lang || 'en';
-    const albums = db.prepare(`SELECT id, title_${lang} as title, description_${lang} as description, cover_image FROM albums`).all();
-    res.json(albums);
-  });
-
-  app.get("/api/albums/:id", (req, res) => {
-    const lang = req.query.lang || 'en';
-    const album = db.prepare(`SELECT id, title_${lang} as title, description_${lang} as description, cover_image FROM albums WHERE id = ?`).get(req.params.id);
-    
-    // Fetch artworks with all language audio URLs for fallback logic
-    const artworksRaw = db.prepare(`SELECT id, title_${lang} as title, description_${lang} as description, image_url, audio_url_en, audio_url_ru, audio_url_kk, year FROM artworks WHERE album_id = ? ORDER BY id ASC`).all(req.params.id);
-    
-    const artworks = artworksRaw.map((art: any) => {
-      const placeholder = 'https://github.com/anars/blank-audio/raw/master/5-seconds-of-silence.mp3';
-      
-      // Helper to check if audio is actually present (not null and not placeholder)
-      const hasAudio = (url: string | null) => url && url !== placeholder;
-
-      // Fallback logic: current lang -> ru -> en
-      let audio_url = art[`audio_url_${lang}`];
-      
-      if (!hasAudio(audio_url)) {
-        audio_url = hasAudio(art.audio_url_ru) ? art.audio_url_ru : (hasAudio(art.audio_url_en) ? art.audio_url_en : null);
-      }
-
-      if (!audio_url || audio_url === placeholder) {
-        console.warn(`[Audio Warning] No real audio track found for Artwork ID: ${art.id} ("${art.title}") in language: ${lang} (or fallbacks RU/EN)`);
-      }
-
-      return {
-        id: art.id,
-        title: art.title,
-        description: art.description,
-        image_url: art.image_url,
-        audio_url: audio_url || null,
-        year: art.year
-      };
-    });
-
-    if (!album) {
-      return res.status(404).json({ error: 'Album not found' });
-    }
-
-    res.json({ ...(album as object), artworks });
-  });
-
-  app.get("/api/news", (req, res) => {
-    const lang = req.query.lang || 'en';
-    const news = db.prepare(`SELECT id, title_${lang} as title, content_${lang} as content, date FROM news ORDER BY date DESC`).all();
-    res.json(news);
-  });
-
-  app.get("/api/press", (req, res) => {
-    const lang = req.query.lang || 'en';
-    const press = db.prepare(`SELECT id, title_${lang} as title, source_${lang} as source, content_${lang} as content, date FROM press ORDER BY date DESC`).all();
-    res.json(press);
-  });
-
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
+  let vite;
+  if (process.env.NODE_ENV !== 'production') {
+    vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: 'custom'
     });
     app.use(vite.middlewares);
   } else {
-    app.use(express.static("dist"));
-    app.get("*", (req, res) => {
-      res.sendFile("dist/index.html", { root: "." });
-    });
+    app.use(express.static(path.resolve(__dirname, 'dist/client'), { index: false }));
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
+  });
+
+  app.use('*', async (req, res) => {
+    try {
+      const url = req.originalUrl;
+      let template, render;
+
+      if (process.env.NODE_ENV !== 'production') {
+        template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+        template = await vite.transformIndexHtml(url, template);
+        render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
+      } else {
+        template = fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8');
+        render = (await import('file://' + path.resolve(__dirname, 'dist/server/entry-server.js'))).render;
+      }
+
+      const appHtml = render(url);
+      const html = template.replace(`<!--ssr-outlet-->`, appHtml);
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+    } catch (e: any) {
+      vite?.ssrFixStacktrace(e);
+      console.error(e);
+      res.status(500).end(e.message);
+    }
+  });
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server listening on http://localhost:${PORT}`);
   });
 }
 
-startServer();
+createServer();

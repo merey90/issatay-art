@@ -3,20 +3,23 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, X, Maximize2, Music, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { albums } from '../data/albums';
 
 interface Artwork {
   id: number;
-  title: string;
-  description?: string;
+  title: Record<string, string | null>;
+  description?: Record<string, string | null>;
   image_url: string;
-  audio_url?: string;
+  audio_url_en?: string | null;
+  audio_url_ru?: string | null;
+  audio_url_kk?: string | null;
   year: string;
 }
 
 interface Album {
   id: number;
-  title: string;
-  description: string;
+  title: Record<string, string>;
+  description: Record<string, string>;
   cover_image: string;
   artworks: Artwork[];
 }
@@ -31,13 +34,25 @@ const AlbumDetail = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const { t, i18n } = useTranslation();
 
+  const getLocalizedText = (item: Record<string, any> | undefined) => {
+    if (!item) return '';
+    if (i18n.language.startsWith('ru')) return item.ru || item.en;
+    if (i18n.language.startsWith('kk')) return item.kk || item.en;
+    return item.en;
+  };
+
+  const getLocalizedAudio = (artwork: Artwork) => {
+    if (i18n.language.startsWith('ru')) return artwork.audio_url_ru;
+    if (i18n.language.startsWith('kk')) return artwork.audio_url_kk;
+    return artwork.audio_url_en;
+  };
+
   useEffect(() => {
-    fetch(`/api/albums/${id}?lang=${i18n.language.split('-')[0]}`)
-      .then(res => res.json())
-      .then(data => {
-        setAlbum(data);
-      });
-  }, [id, i18n.language]);
+    if (id) {
+      const foundAlbum = albums.find(a => a.id === parseInt(id)) as unknown as Album;
+      setAlbum(foundAlbum);
+    }
+  }, [id]);
 
   useEffect(() => {
     if (album && trackId) {
@@ -74,7 +89,7 @@ const AlbumDetail = () => {
 
   return (
     <div className="min-h-screen py-20 px-6 relative overflow-hidden transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
-      {album.title === 'The Book World' && (
+      {album.title?.en === 'The Book World' && (
         <div 
           className="absolute inset-0 opacity-10 pointer-events-none grayscale"
           style={{ 
@@ -96,8 +111,8 @@ const AlbumDetail = () => {
           </Link>
 
           <div className="mb-24">
-            <h1 className="text-5xl lg:text-7xl font-serif font-black tracking-tighter mb-6" style={{ color: 'var(--app-text)' }}>{album.title}</h1>
-            <p className="max-w-2xl text-lg font-serif italic opacity-70" style={{ color: 'var(--app-text)' }}>{album.description}</p>
+            <h1 className="text-5xl lg:text-7xl font-serif font-black tracking-tighter mb-6" style={{ color: 'var(--app-text)' }}>{getLocalizedText(album.title)}</h1>
+            <p className="max-w-2xl text-lg font-serif italic opacity-70" style={{ color: 'var(--app-text)' }}>{getLocalizedText(album.description)}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -114,14 +129,14 @@ const AlbumDetail = () => {
               >
                 <img
                   src={artwork.image_url}
-                  alt={artwork.title}
+                  alt={getLocalizedText(artwork.title)}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 flex flex-col justify-end p-6" style={{ background: 'var(--card-gradient)' }}>
-                  <h4 className="font-serif text-lg leading-tight mb-1" style={{ color: 'var(--app-text)' }}>{artwork.title}</h4>
+                  <h4 className="font-serif text-lg leading-tight mb-1" style={{ color: 'var(--app-text)' }}>{getLocalizedText(artwork.title)}</h4>
                   <p className="incised-text" style={{ color: 'var(--incised-text-color)' }}>{artwork.year}</p>
                   <div className="absolute top-6 right-6 flex gap-3">
-                    {artwork.audio_url && <Music className="opacity-40" size={16} style={{ color: 'var(--app-text)' }} />}
+                    {getLocalizedAudio(artwork) && <Music className="opacity-40" size={16} style={{ color: 'var(--app-text)' }} />}
                     <Maximize2 className="opacity-20 group-hover:opacity-60 transition-opacity" size={16} style={{ color: 'var(--app-text)' }} />
                   </div>
                 </div>
@@ -159,15 +174,15 @@ const AlbumDetail = () => {
               <div className="relative overflow-hidden rounded-sm shadow-2xl border w-full max-w-3xl" style={{ borderColor: 'var(--card-border)' }}>
                 <img
                   src={selectedImage.image_url}
-                  alt={selectedImage.title}
+                  alt={getLocalizedText(selectedImage.title)}
                   className="w-full max-h-[50vh] md:max-h-[60vh] object-contain"
                 />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 pointer-events-none text-center" 
                      style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)' }}>
-                  <h3 className="text-xl md:text-2xl font-serif mb-1" style={{ color: '#FFFFFF' }}>{selectedImage.title}</h3>
+                  <h3 className="text-xl md:text-2xl font-serif mb-1" style={{ color: '#FFFFFF' }}>{getLocalizedText(selectedImage.title)}</h3>
                   {selectedImage.description && (
                     <p className="text-[10px] md:text-xs font-serif italic opacity-80 mb-2" style={{ color: '#FFFFFF' }}>
-                      {selectedImage.description}
+                      {getLocalizedText(selectedImage.description)}
                     </p>
                   )}
                   <p className="incised-text text-[10px] md:text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{selectedImage.year}</p>
@@ -176,7 +191,7 @@ const AlbumDetail = () => {
 
               <div className="w-full max-w-2xl">
                 <div className="p-4 rounded-sm border w-full shadow-sm flex items-center gap-4" style={{ backgroundColor: 'var(--app-bg)', borderColor: 'var(--card-border)' }}>
-                  {selectedImage.audio_url ? (
+                  {getLocalizedAudio(selectedImage) ? (
                     <>
                       <audio 
                         ref={audioRef}
@@ -184,9 +199,9 @@ const AlbumDetail = () => {
                         controlsList="nodownload noplaybackrate"
                         className="flex-1 h-10 opacity-80 hover:opacity-100 transition-opacity"
                         autoPlay={false}
-                        key={selectedImage.audio_url} // Force re-render when URL changes
+                        key={getLocalizedAudio(selectedImage)} // Force re-render when URL changes
                       >
-                        <source src={selectedImage.audio_url} type="audio/mpeg" />
+                        <source src={getLocalizedAudio(selectedImage)!} type="audio/mpeg" />
                         Your browser does not support the audio element.
                       </audio>
                       

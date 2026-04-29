@@ -1,15 +1,8 @@
 import { motion } from 'motion/react';
-import { ArrowRight, ExternalLink, BookOpen } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Album {
-  id: number;
-  title: string;
-  description: string;
-  cover_image: string;
-}
+import { albums } from '../data/albums';
 
 const museums = [
   {
@@ -76,13 +69,6 @@ const museums = [
 
 const Gallery = () => {
   const { t, i18n } = useTranslation();
-  const [albums, setAlbums] = useState<Album[]>([]);
-
-  useEffect(() => {
-    fetch(`/api/albums?lang=${i18n.language.split('-')[0]}`)
-      .then(res => res.json())
-      .then(data => setAlbums(data));
-  }, [i18n.language]);
 
   const getLocalizedText = (item: any) => {
     if (i18n.language.startsWith('ru')) return item.ru;
@@ -120,12 +106,12 @@ const Gallery = () => {
                   <Link to={`/gallery/${album.id}`} className="block w-full h-full">
                     <img
                       src={album.cover_image}
-                      alt={album.title}
+                      alt={getLocalizedText(album.title)}
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale opacity-80 group-hover:opacity-100"
                     />
                     <div className="absolute inset-0 p-8 flex flex-col justify-end" style={{ background: 'var(--card-gradient)' }}>
-                      <h3 className="text-2xl font-serif mb-2" style={{ color: 'var(--app-text)' }}>{album.title}</h3>
-                      <p className="text-sm line-clamp-2 mb-6 font-serif italic opacity-70" style={{ color: 'var(--app-text)' }}>{album.description}</p>
+                      <h3 className="text-2xl font-serif mb-2" style={{ color: 'var(--app-text)' }}>{getLocalizedText(album.title)}</h3>
+                      <p className="text-sm line-clamp-2 mb-6 font-serif italic opacity-70" style={{ color: 'var(--app-text)' }}>{getLocalizedText(album.description)}</p>
                       <div className="incised-text group-hover:!opacity-100 transition-opacity flex items-center gap-2" style={{ color: 'var(--app-text)', opacity: 0.4 }}>
                         {t('gallery.open_album')} <ArrowRight size={14} />
                       </div>

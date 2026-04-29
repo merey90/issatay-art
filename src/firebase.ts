@@ -7,11 +7,9 @@ import firebaseConfig from '../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-// Initialize Analytics lazily
-export const analytics = isSupported().then(yes => yes ? getAnalytics(app) : null);
-
-export default app;
+// Initialize Analytics conditionally
+isSupported().then(yes => yes ? getAnalytics(app) : null);
