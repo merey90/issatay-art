@@ -19,6 +19,22 @@ export interface Event {
 
 export const eventsData: Event[] = [
   {
+    id: 'round-table-heritage',
+    title: {
+      ru: 'Круглый стол “Наследие”',
+      en: 'Round table “Heritage”',
+      kk: 'Дөңгелек үстел “Мұра”'
+    },
+    date: '05.06.2026',
+    status: 'upcoming',
+    coverImage: 'https://firebasestorage.googleapis.com/v0/b/issatay-art.firebasestorage.app/o/images%2F90%20anniversary%20instagram%20bg%20low.jpg?alt=media',
+    description: {
+      ru: 'Начало в 16:00',
+      en: 'Starts at 16:00',
+      kk: 'Сағат 16:00-де басталады'
+    }
+  },
+  {
     id: 'round-table-1',
     title: {
       ru: 'Круглый стол “Исатай Исабаев: Художественное наследие”',

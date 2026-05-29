@@ -33,7 +33,7 @@ const Events = () => {
                 >
                   <div className="metal-plate p-6 md:p-8 relative overflow-hidden transition-all duration-500 hover:shadow-2xl flex flex-col md:flex-row gap-8 items-center md:items-stretch h-full">
                     {event.coverImage && (
-                      <div className="w-full md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden rounded-sm relative shrink-0" style={{ backgroundColor: 'var(--zinc-plate)' }}>
+                      <div className="w-full md:w-1/3 md:max-w-[300px] aspect-square overflow-hidden rounded-sm relative shrink-0" style={{ backgroundColor: 'var(--zinc-plate)' }}>
                         <img 
                           src={event.coverImage} 
                           alt={event.title[lang] || event.title.en} 

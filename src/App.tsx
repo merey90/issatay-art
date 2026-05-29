@@ -42,6 +42,7 @@ import News from './pages/News';
 import Events from './pages/Events';
 import EventDetail from './pages/EventDetail';
 import Press from './pages/Press';
+import HiddenGallery from './pages/HiddenGallery';
 
 // Theme Context
 const ThemeContext = createContext<{
@@ -250,6 +251,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/biography" element={<Biography />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/gallery/impressions-of-poland" element={<HiddenGallery />} />
               <Route path="/gallery/:id" element={<AlbumDetail />} />
               <Route path="/gallery/:id/:trackId" element={<AlbumDetail />} />
               <Route path="/news" element={<News />} />

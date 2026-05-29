@@ -1,8 +1,10 @@
 import { motion } from 'motion/react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useTranslation } from 'react-i18next';
 import { milestones } from '../data/milestones';
 import { biography } from '../data/biography';
+import { awardsMd, booksMd } from '../data/tables_md';
 
 const Biography = () => {
   const { t, i18n } = useTranslation();
@@ -19,13 +21,16 @@ const Biography = () => {
     return biography.en;
   };
 
+  const awardsTitle = i18n.language.startsWith('ru') ? "Награды и Грамоты" : i18n.language.startsWith('kk') ? "Марапаттар мен грамоталар" : "Awards and Certificates";
+  const booksTitle = i18n.language.startsWith('ru') ? "Список оформленных книг" : i18n.language.startsWith('kk') ? "Безендірілген кітаптар тізімі" : "List of Illustrated Books";
+
   return (
     <div className="min-h-screen py-20 px-6 transition-colors duration-300" style={{ backgroundColor: 'var(--app-bg)' }}>
       <div className="max-w-4xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8 }}
         >
           <span className="incised-text mb-8 block text-center">{t('biography.label')}</span>
           <h1 className="text-5xl lg:text-7xl font-serif font-black tracking-tighter mb-12 text-center leading-none" style={{ color: 'var(--app-text)' }}>
@@ -40,7 +45,7 @@ const Biography = () => {
             className="prose prose-zinc prose-lg max-w-none text-center mb-16 mx-auto"
           >
             <div className="leading-relaxed font-serif text-xl space-y-8 opacity-80" style={{ color: 'var(--app-text)' }}>
-              <ReactMarkdown>{getLocalizedBio()}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{getLocalizedBio()}</ReactMarkdown>
             </div>
           </motion.div>
 
@@ -58,6 +63,31 @@ const Biography = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
             <p className="absolute bottom-6 right-6 incised-text !text-white/80 italic">{t('biography.studio_caption')}</p>
+          </motion.div>
+
+          {/* Awards and Books Tables */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7 }}
+            className="w-full mb-16"
+          >
+            <div className="flex flex-col gap-12">
+              <div className="p-8 sm:p-12 border rounded-sm shadow-sm transition-colors duration-300" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
+                <h3 className="incised-text mb-8 text-center text-xl">{awardsTitle}</h3>
+                <div className="prose max-w-none overflow-x-auto" style={{ color: 'var(--app-text)' }}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{awardsMd}</ReactMarkdown>
+                </div>
+              </div>
+
+              <div className="p-8 sm:p-12 border rounded-sm shadow-sm transition-colors duration-300" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
+                <h3 className="incised-text mb-8 text-center text-xl">{booksTitle}</h3>
+                <div className="prose max-w-none overflow-x-auto" style={{ color: 'var(--app-text)' }}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{booksMd}</ReactMarkdown>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div 
