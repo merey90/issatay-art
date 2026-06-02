@@ -29,9 +29,9 @@ export const eventsData: Event[] = [
     status: 'upcoming',
     coverImage: 'https://firebasestorage.googleapis.com/v0/b/issatay-art.firebasestorage.app/o/images%2F90%20anniversary%20instagram%20bg%20low.jpg?alt=media',
     description: {
-      ru: 'Начало в 16:00',
-      en: 'Starts at 16:00',
-      kk: 'Сағат 16:00-де басталады'
+      ru: 'Начало в 13:00 (время Астаны)',
+      en: 'Starts at 13:00 (Astana time)',
+      kk: 'Астана уақытымен 13:00-де басталады'
     }
   },
   {

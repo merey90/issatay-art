@@ -71,7 +71,7 @@ const Biography = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.7 }}
-            className="w-full mb-16"
+            className="hidden w-full mb-16"
           >
             <div className="flex flex-col gap-12">
               <div className="p-8 sm:p-12 border rounded-sm shadow-sm transition-colors duration-300" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
